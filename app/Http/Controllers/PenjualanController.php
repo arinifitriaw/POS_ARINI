@@ -57,9 +57,8 @@ class PenjualanController extends Controller
         );
 
         $keyword = $request->input('search');
-
         $products = Produk::when($keyword, function ($query) use ($keyword) {
-            $query->where('nama', 'like', '%' . $keyword . '%');
+        $query->where('nama', 'like', '%' . $keyword . '%');
         })
         ->orderBy('nama')
         ->get();

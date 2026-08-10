@@ -118,7 +118,7 @@
             <div class="col-md-5 text-md-end mt-3 mt-md-0">
                 <a href="{{ route('penjualan.create') }}" 
                    class="btn btn-gradient-light rounded-pill px-4 py-2.5 fw-bold shadow-sm">
-                    <i class="fa-solid fa-plus-circle me-2"></i>Create Sale
+                    <i class="fa-solid fa-plus-circle me-2"></i>Tambah Penjualan
                 </a>
             </div>
         </div>
@@ -139,7 +139,7 @@
                         class="form-control border-0 shadow-none bg-transparent" 
                         placeholder="Search penjualan berdasarkan kasir...">
                     <button class="btn btn-gradient-green rounded-3 px-4 fw-bold" type="submit">
-                        Search
+                        Cari
                     </button>
                 </div>
             </form>
@@ -185,7 +185,7 @@
                             <span class="fw-semibold text-dark">
                                 <i class="fa-solid fa-user-tie text-secondary me-1"></i>
                                 <!-- 🔧 PERBAIKAN: Tambah Optional Chaining ?-> agar tidak crash bila user null -->
-                                {{ $sale->user?->name ?? 'User Terhapus' }}
+                                {{ $sale->user?->name ?? 'Pengguna Terhapus' }}
                             </span>
                         </td>
 
@@ -230,8 +230,8 @@
 
                                 @can('view', $sale)
                                 <a href="{{ route('penjualan.edit', $sale) }}" 
-                                   class="btn btn-warning btn-action-text text-dark shadow-sm">
-                                    Edit
+                                   class="btn btn-warning btn-action-text text-white shadow-sm">
+                                    Lanjutkan
                                 </a>
                                 @endcan
 

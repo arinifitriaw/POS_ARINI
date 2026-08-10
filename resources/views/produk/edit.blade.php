@@ -13,7 +13,7 @@
          style="background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h2 class="fw-bold mb-1">Edit Product</h2>
+                <h2 class="fw-bold mb-1">Edit Produk</h2>
                 <p class="mb-0 text-white-50">Perbarui data informasi produk</p>
             </div>
             <a href="{{ route('produk.index') }}" class="btn btn-light rounded-pill px-4 font-weight-bold text-dark shadow-sm">

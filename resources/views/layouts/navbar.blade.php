@@ -17,19 +17,20 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
         <li class="nav-item">
-          <a class="nav-link rounded-pill px-3 py-2 transition-all {{ Request::is('dashboard') ? 'active-nav fw-bold text-primary bg-primary bg-opacity-10' : 'text-secondary opacity-75 fw-medium hover-nav' }}" href="{{ route('dashboard') }}">
-            Dashboard
+          <a class="nav-link rounded-pill px-3 py-2 transition-all {{ Request::is('beranda') ? 'active-nav fw-bold text-primary bg-primary bg-opacity-10' : 'text-secondary opacity-75 fw-medium hover-nav' }}" href="{{ route('beranda') }}">
+            Beranda
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link rounded-pill px-3 py-2 transition-all {{ Request::is('admin/users') ? 'active-nav fw-bold text-primary bg-primary bg-opacity-10' : 'text-secondary opacity-75 fw-medium hover-nav' }}" href="{{ route('admin.users') }}">
-            Users
+            Pengguna
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link rounded-pill px-3 py-2 transition-all {{ Request::is('produk') ? 'active-nav fw-bold text-primary bg-primary bg-opacity-10' : 'text-secondary opacity-75 fw-medium hover-nav' }}" href="{{ route('produk.index') }}">
             Produk
           </a>
+        </li>
         </li>
         <li class="nav-item">
           <a class="nav-link rounded-pill px-3 py-2 transition-all {{ Request::is('penjualan') ? 'active-nav fw-bold text-primary bg-primary bg-opacity-10' : 'text-secondary opacity-75 fw-medium hover-nav' }}" href="{{ route('penjualan.index') }}">
@@ -43,7 +44,7 @@
         @csrf
         <button type="submit" class="btn btn-danger btn-logout d-flex align-items-center gap-2 px-4 py-2 rounded-pill fw-semibold shadow-sm">
           <i class="bi bi-box-arrow-right"></i>
-          <span>Logout</span>
+          <span>Keluar</span>
         </button>
       </form>
     </div>

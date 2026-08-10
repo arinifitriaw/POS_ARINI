@@ -195,7 +195,7 @@
                 <div class="brand-icon">
                     <i class="fa-solid fa-store fa-2x text-white"></i>
                 </div>
-                <h3>POS_Arini</h3>
+                <h3>POS Arini</h3>
                 <p class="mb-0">Sistem Kasir & Point Of Sale</p>
             </div>
 

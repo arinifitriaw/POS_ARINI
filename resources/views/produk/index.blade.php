@@ -98,7 +98,7 @@
                         <i class="fa-solid fa-box-archive fa-2x text-white"></i>
                     </div>
                     <div>
-                        <h2 class="fw-bold mb-0">Halaman Product</h2>
+                        <h2 class="fw-bold mb-0">Halaman Produk</h2>
                         <p class="mb-0 text-white-50">Kelola data produk aplikasi POS</p>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                 @can('create', App\Models\Produk::class)
                 <a href="{{ route('produk.create') }}" 
                    class="btn btn-gradient-light rounded-pill px-4 py-2.5 fw-bold shadow-sm">
-                    <i class="fa-solid fa-plus-circle me-2"></i>Create Product
+                    <i class="fa-solid fa-plus-circle me-2"></i>Tambah Produk
                 </a>
                 @endcan
             </div>
@@ -129,7 +129,7 @@
                         class="form-control border-0 shadow-none bg-transparent" 
                         placeholder="Search nama produk">
                     <button class="btn btn-gradient-purple rounded-3 px-4 fw-bold" type="submit">
-                        Search
+                        Cari
                     </button>
                 </div>
             </form>
@@ -153,7 +153,7 @@
                 <thead class="bg-light text-secondary text-uppercase fs-7">
                     <tr>
                         <th class="ps-4">#</th>
-                        <th>User</th>
+                        <th>Pengguna</th>
                         <th>Foto</th>
                         <th>Nama</th>
                         <th>Harga Beli</th>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 {{-- Title Halaman --}}
-@section('title', 'Dashboard - Ringkasan Hari Ini')
+@section('title', 'Beranda - Ringkasan Hari Ini')
 
 @section('content')
 @include('layouts.navbar')

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah User')
+@section('title', 'Edit Pengguna')
 
 @section('content')
 
@@ -99,7 +99,7 @@
         </div>
         
         <div class="card-body p-4 p-md-5">
-            <form action="{{ route('admin.users.store') }}" method="POST">
+            <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                 
                 {{-- Memanggil Partial Form --}}
                 @include('users._form')

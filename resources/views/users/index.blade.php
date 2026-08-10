@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
+@section('title', 'Pengguna')
 
 @section('content')
 
@@ -90,7 +90,7 @@
                         <i class="fa-solid fa-users-gear fa-2x text-white"></i>
                     </div>
                     <div>
-                        <h2 class="fw-bold mb-0">Halaman Users</h2>
+                        <h2 class="fw-bold mb-0">Halaman Pengguna</h2>
                         <p class="mb-0 text-white-50">Kelola data hak akses dan akun pengguna aplikasi POS</p>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
             <div class="col-md-5 text-md-end mt-3 mt-md-0">
                 <a href="{{ route('admin.users.create') }}" 
                    class="btn btn-gradient-light rounded-pill px-4 py-2.5 fw-bold shadow-sm">
-                    <i class="fa-solid fa-user-plus me-2"></i>Create User
+                    <i class="fa-solid fa-user-plus me-2"></i>Tambah Pengguna
                 </a>
             </div>
         </div>
@@ -119,7 +119,7 @@
                         class="form-control border-0 shadow-none bg-transparent" 
                         placeholder="Search username or email...">
                     <button class="btn btn-gradient-orange rounded-3 px-4 fw-bold" type="submit">
-                        Search
+                        Cari
                     </button>
                 </div>
             </form>
@@ -131,7 +131,7 @@
         
         <div class="card-header table-header-gradient py-3 px-4 d-flex justify-content-between align-items-center">
             <h5 class="fw-bold mb-0">
-                <i class="fa-solid fa-users text-white me-2"></i>Daftar Users
+                <i class="fa-solid fa-users text-white me-2"></i>Daftar Pengguna
             </h5>
             <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-bold">
                 Total: {{ $users->total() }} User
@@ -143,7 +143,7 @@
                 <thead class="bg-light text-secondary text-uppercase fs-7">
                     <tr>
                         <th class="ps-4">#</th>
-                        <th>Name</th>
+                        <th>Nama</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th class="text-center" width="200">Aksi</th>

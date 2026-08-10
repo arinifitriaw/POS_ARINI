@@ -54,7 +54,7 @@
                     <i class="fa-solid fa-user-plus fa-2x text-white"></i>
                 </div>
                 <div>
-                    <h2 class="fw-bold mb-0">Tambah User Baru</h2>
+                    <h2 class="fw-bold mb-0">Tambah Pengguna Baru</h2>
                     <p class="mb-0 text-white-50">Isi formulir di bawah untuk menambahkan pengguna baru ke sistem POS</p>
                 </div>
             </div>

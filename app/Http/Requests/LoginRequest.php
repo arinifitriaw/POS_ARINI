@@ -33,7 +33,7 @@ class LoginRequest extends FormRequest
             'email.required'    => 'Email wajib diisi.',
             'email.email'       => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
-            'password.main'     => 'Password minimal :min karakter.',
+            'password.min'     => 'Password minimal :min karakter.',
         ];
     }
 }

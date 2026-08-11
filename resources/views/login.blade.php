@@ -14,16 +14,17 @@
         margin: 0 !important;
         padding: 0 !important;
         overflow-x: hidden;
+        background-color: #e2e8f0;
     }
 
-    /* Override pembatas container bawaan layout.app jika ada */
+    /* Override pembatas container bawaan layout.app */
     .container, .container-fluid {
         padding-left: 0 !important;
         padding-right: 0 !important;
         max-width: 100% !important;
     }
 
-    /* Fix Full Screen Wrapper dengan Position Fixed */
+    /* Full Screen Wrapper dengan Background Terang & Depth 3D */
     .login-container-wrapper {
         position: fixed;
         top: 0;
@@ -33,74 +34,112 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #ec4899 100%);
+        background: radial-gradient(circle at 10% 20%, #f1f5f9 0%, #e2e8f0 40%, #cbd5e1 100%);
         z-index: 9999;
         padding: 20px;
+    }
+
+    /* Element Dekorasi 3D Latar Belakang Floating */
+    .bg-shape-1 {
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(203, 213, 225, 0.4));
+        top: 10%;
+        left: 15%;
+        box-shadow: 0 20px 40px rgba(148, 163, 184, 0.3);
+        filter: blur(2px);
+    }
+
+    .bg-shape-2 {
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        border-radius: 40px;
+        background: linear-gradient(135deg, rgba(71, 85, 105, 0.15), rgba(255, 255, 255, 0.5));
+        bottom: 12%;
+        right: 15%;
+        transform: rotate(25deg);
+        box-shadow: 0 15px 35px rgba(100, 116, 139, 0.25);
     }
 
     /* Card Wrapper */
     .login-wrapper {
         width: 100%;
         max-width: 420px;
+        position: relative;
+        z-index: 10;
     }
 
-    /* Card Login Modern */
+    /* Card Login Modern Efek 3D */
     .login-card {
         background: #ffffff;
-        border-radius: 24px;
+        border-radius: 28px;
         overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        /* Double Shadow untuk Efek Timbul 3D */
+        box-shadow: 
+            0 20px 40px -10px rgba(51, 65, 85, 0.2), 
+            0 10px 15px -5px rgba(51, 65, 85, 0.1),
+            inset 0 2px 0 rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        transition: transform 0.3s ease;
     }
 
-    /* Header Card (Gradient Blue to Purple) */
+    /* Header Card - Slate Grey Gradient Soft */
     .login-header {
-        background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%);
+        background: linear-gradient(135deg, #334155 0%, #475569 100%);
         color: white;
-        padding: 30px 25px;
+        padding: 35px 25px 30px;
         text-align: center;
+        box-shadow: 0 8px 15px rgba(51, 65, 85, 0.15);
     }
 
+    /* Icon 3D Box Timbul */
     .login-header .brand-icon {
-        width: 55px;
-        height: 55px;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
-        border-radius: 16px;
+        width: 65px;
+        height: 65px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 10px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        margin-bottom: 14px;
+        box-shadow: 
+            0 10px 20px rgba(15, 23, 42, 0.25),
+            inset 0 2px 2px rgba(255, 255, 255, 0.4);
     }
 
     .login-header h3 {
         margin: 0;
         font-weight: 800;
-        font-size: 1.5rem;
+        font-size: 1.55rem;
         letter-spacing: 0.5px;
     }
 
     .login-header p {
-        margin: 4px 0 0;
-        opacity: 0.85;
-        font-size: 0.85rem;
+        margin: 6px 0 0;
+        color: #cbd5e1;
+        font-size: 0.875rem;
     }
 
     /* Body Card Form */
     .login-body {
-        padding: 30px 25px;
+        padding: 35px 30px;
+        background: #ffffff;
     }
 
     .form-label {
         font-weight: 700;
-        color: #334155;
-        font-size: 0.85rem;
+        color: #475569;
+        font-size: 0.825rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
-    /* Custom Input Group dengan Icon */
+    /* Input Custom dengan Soft Inset Shadow (Efek Cekung 3D) */
     .input-group-custom {
         position: relative;
     }
@@ -116,57 +155,79 @@
     }
 
     .form-control-custom {
-        height: 50px;
-        border-radius: 14px;
-        padding-left: 46px;
-        border: 1.5px solid #e2e8f0;
+        height: 52px;
+        border-radius: 16px;
+        padding-left: 48px;
+        border: 1.5px solid #cbd5e1;
         background-color: #f8fafc;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        font-weight: 600;
+        color: #1e293b;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+        transition: all 0.25s ease;
     }
 
     .form-control-custom:focus {
         background-color: #ffffff;
-        border-color: #6366f1;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        border-color: #475569;
+        box-shadow: 
+            inset 0 1px 2px rgba(0, 0, 0, 0.02),
+            0 0 0 4px rgba(71, 85, 105, 0.15);
     }
 
     .form-control-custom:focus + .input-icon {
-        color: #6366f1;
+        color: #334155;
     }
 
-    /* Tombol Login Gradient */
+    /* Tombol Login 3D Tactile Button */
     .btn-login {
         width: 100%;
-        height: 50px;
-        border-radius: 14px;
+        height: 52px;
+        border-radius: 16px;
         font-weight: 700;
         font-size: 1rem;
-        background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%);
+        background: linear-gradient(180deg, #475569 0%, #334155 100%);
         color: white;
         border: none;
-        box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.4);
-        transition: all 0.3s ease;
+        /* Bevel & Depth Shadow 3D */
+        box-shadow: 
+            0 5px 0 #1e293b,
+            0 10px 20px rgba(30, 41, 59, 0.25);
+        transition: all 0.15s ease;
+        position: relative;
+        top: 0;
     }
 
     .btn-login:hover {
-        background: linear-gradient(135deg, #1d4ed8 0%, #4f46e5 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.5);
+        background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+        color: white;
+        top: 2px;
+        box-shadow: 
+            0 3px 0 #0f172a,
+            0 6px 14px rgba(15, 23, 42, 0.3);
+    }
+
+    .btn-login:active {
+        top: 5px;
+        box-shadow: 
+            0 0 0 #0f172a,
+            0 2px 6px rgba(15, 23, 42, 0.3);
     }
 
     /* Alert Pesan Sukses Logout / Error Session */
     .alert-custom {
-        border-radius: 14px;
+        border-radius: 16px;
         border: none;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        box-shadow: 0 10px 25px rgba(51, 65, 85, 0.15);
     }
 </style>
 
-<!-- Fixed Container agar Penuh 100% Layar Browser -->
+<!-- Fixed Container Full Layar Browser -->
 <div class="login-container-wrapper">
+
+    <!-- Elemen Dekorasi Latar Belakang 3D -->
+    <div class="bg-shape-1 d-none d-md-block"></div>
+    <div class="bg-shape-2 d-none d-md-block"></div>
 
     <div class="login-wrapper">
 
@@ -187,7 +248,7 @@
             </div>
         @endif
 
-        <!-- Card Login -->
+        <!-- Card Login 3D -->
         <div class="login-card">
 
             <!-- Header Card -->
@@ -195,7 +256,7 @@
                 <div class="brand-icon">
                     <i class="fa-solid fa-store fa-2x text-white"></i>
                 </div>
-                <h3>POS Arini</h3>
+                <h3>SyntezOfficial</h3>
                 <p class="mb-0">Sistem Kasir & Point Of Sale</p>
             </div>
 
@@ -247,7 +308,7 @@
                         @enderror
                     </div>
 
-                    <!-- Tombol Submit -->
+                    <!-- Tombol Submit 3D -->
                     <button type="submit" class="btn btn-login d-flex align-items-center justify-content-center gap-2">
                         <span>Login</span>
                         <i class="fa-solid fa-arrow-right-to-bracket"></i>

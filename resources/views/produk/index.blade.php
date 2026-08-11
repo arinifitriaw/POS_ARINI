@@ -6,95 +6,142 @@
 
 @include('layouts.navbar')
 
-<!-- CDN FontAwesome untuk Icon Header & Search -->
+<!-- CDN FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     body {
-        background-color: #f3f4f6;
+        background-color: #f1f5f9;
+        color: #334155;
     }
     
-    /* Hero Header Banner Colorful */
+    /* Hero Header Banner Slate Grey Monokrom */
     .hero-banner {
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+        background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
         border-radius: 20px;
         color: white;
-        padding: 2rem;
-        box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        padding: 2.2rem;
+        box-shadow: 0 10px 25px -5px rgba(30, 41, 59, 0.25);
+    }
+
+    .hero-banner .text-white-50 {
+        color: #cbd5e1 !important;
     }
 
     /* Form Pencarian Modern */
     .search-card {
         background: #ffffff;
-        border: 2px solid #e5e7eb;
+        border: 2px solid #e2e8f0;
         border-radius: 16px;
         transition: all 0.3s ease;
     }
     .search-card:focus-within {
-        border-color: #8b5cf6;
-        box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        border-color: #64748b;
+        box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.15);
     }
 
-    /* Custom Gradient Buttons */
+    /* Custom Grey Buttons */
     .btn-gradient-light {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(8px);
         color: white;
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         transition: all 0.3s ease;
     }
     .btn-gradient-light:hover {
         background: white;
-        color: #7c3aed;
+        color: #0f172a;
         transform: translateY(-2px);
     }
 
-    .btn-gradient-purple {
-        background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    .btn-dark-gray {
+        background-color: #334155;
         color: white;
         border: none;
+        transition: all 0.3s ease;
     }
-    .btn-gradient-purple:hover {
-        background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    .btn-dark-gray:hover {
+        background-color: #0f172a;
         color: white;
     }
 
-    /* Table Header Gradient */
-    .table-header-gradient {
-        background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
-        color: white;
+    /* Card Produk styling */
+    .product-card {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        border: 1px solid #e2e8f0 !important;
+        background: #ffffff;
+    }
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 25px -5px rgba(51, 65, 85, 0.1) !important;
     }
 
-    .product-img {
-        width: 55px;
-        height: 55px;
-        object-fit: cover;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    /* Mengubah object-fit menjadi contain agar foto kelihatan full */
+    .product-card-img {
+        height: 190px;
+        object-fit: contain;
+        width: 100%;
+        background-color: #f8fafc;
+        border-radius: 16px 16px 0 0;
+        padding: 8px;
     }
 
-    /* Style Tombol Aksi Berteks */
-    .btn-action-text {
+    .product-card-placeholder {
+        height: 190px;
+        background-color: #f8fafc;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .fs-7 {
         font-size: 0.825rem;
-        font-weight: 600;
-        padding: 0.35rem 0.85rem;
-        border-radius: 50rem;
-        transition: all 0.2s ease-in-out;
     }
-    .btn-action-text:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    /* Style Judul Supaya Tidak Terpotong */
+    .product-title {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        line-height: 1.4;
+        min-height: 2.8rem;
+    }
+
+    /* Custom Badges Monokrom Abu-abu */
+    .badge-grey-dark {
+        background-color: #0f172a;
+        color: #ffffff;
+    }
+
+    .badge-grey-medium {
+        background-color: #475569;
+        color: #ffffff;
+    }
+
+    .badge-grey-light {
+        background-color: #94a3b8;
+        color: #ffffff;
+    }
+
+    /* Custom Outline Button Monokrom untuk Hapus */
+    .btn-outline-slate-danger {
+        color: #334155;
+        border-color: #94a3b8;
+        transition: all 0.2s ease;
+    }
+    .btn-outline-slate-danger:hover {
+        background-color: #0f172a;
+        border-color: #0f172a;
+        color: #ffffff;
     }
 </style>
 
 <div class="container py-4">
 
-    <!-- 1. Colorful Hero Header Section -->
+    <!-- 1. Hero Header Section -->
     <div class="hero-banner mb-4">
         <div class="row align-items-center">
             <div class="col-md-7">
-                <div class="d-flex align-items-center gap-3 mb-2">
-                    <div class="p-3 bg-white bg-opacity-25 rounded-circle d-inline-flex align-items-center justify-content-center">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-3 bg-white bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-box-archive fa-2x text-white"></i>
                     </div>
                     <div>
@@ -114,134 +161,132 @@
         </div>
     </div>
 
-    <!-- 2. Colorful Search Box Section -->
-    <div class="card border-0 shadow-sm rounded-4 mb-4">
-        <div class="card-body p-3">
-            <form action="{{ route('produk.index') }}" method="GET">
-                <div class="input-group search-card p-1">
-                    <span class="input-group-text bg-transparent border-0 text-purple ps-3">
-                        <i class="fa-solid fa-magnifying-glass text-primary"></i>
-                    </span>
-                    <input 
-                        type="text" 
-                        name="search" 
-                        value="{{ request('search') }}" 
-                        class="form-control border-0 shadow-none bg-transparent" 
-                        placeholder="Search nama produk">
-                    <button class="btn btn-gradient-purple rounded-3 px-4 fw-bold" type="submit">
-                        Cari
-                    </button>
+    <!-- 2. Search Box & Header Counter -->
+    <div class="row align-items-center mb-4 g-3">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-2">
+                    <form action="{{ route('produk.index') }}" method="GET">
+                        <div class="input-group search-card p-1">
+                            <span class="input-group-text bg-transparent border-0 text-secondary ps-3">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                name="search" 
+                                value="{{ request('search') }}" 
+                                class="form-control border-0 shadow-none bg-transparent" 
+                                placeholder="Cari nama produk...">
+                            <button class="btn btn-dark-gray rounded-3 px-4 fw-bold" type="submit">
+                                Cari
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <span class="badge bg-white text-secondary border shadow-sm rounded-pill px-4 py-3 fw-bold fs-6">
+                <i class="fa-solid fa-boxes-stacked me-2 text-secondary"></i>Total: {{ $products->total() }} Produk
+            </span>
         </div>
     </div>
 
-    <!-- 3. Colorful Data Table Section -->
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-        
-        <div class="card-header table-header-gradient py-3 px-4 d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold mb-0">
-                <i class="fa-solid fa-list-check me-2"></i>Daftar Produk
-            </h5>
-            <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-bold">
-                Total: {{ $products->total() }} Produk
-            </span>
-        </div>
+    <!-- 3. Grid Produk Ke Samping -->
+    <div class="row g-4 mb-4">
+        @forelse ($products as $product)
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card shadow-sm rounded-4 h-100 product-card overflow-hidden">
+                    
+                    <!-- Foto & Badge Stok Monokrom -->
+                    <div class="position-relative">
+                        @if($product->foto)
+                            <img src="{{ asset('storage/'.$product->foto) }}" class="product-card-img" alt="{{ $product->nama }}">
+                        @else
+                            <div class="product-card-placeholder d-flex flex-column align-items-center justify-content-center text-muted">
+                                <i class="fa-regular fa-image fa-2x mb-1 opacity-50"></i>
+                                <span class="fs-7 fw-semibold">No Image</span>
+                            </div>
+                        @endif
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light text-secondary text-uppercase fs-7">
-                    <tr>
-                        <th class="ps-4">#</th>
-                        <th>Pengguna</th>
-                        <th>Foto</th>
-                        <th>Nama</th>
-                        <th>Harga Beli</th>
-                        <th>Harga Jual</th>
-                        <th>Stok</th>
-                        <th class="text-center" width="220">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @forelse ($products as $product)
-                    <tr>
-                        <td class="ps-4 fw-bold text-muted">{{ $products->firstItem() + $loop->index }}</td>
-                        <td>
-                            <span class="fw-semibold text-dark">
-                                <i class="fa-solid fa-circle-user text-secondary me-1"></i>{{ $product->user->name }}
-                            </span>
-                        </td>
-                        <td>
-                            @if($product->foto)
-                                <img src="{{ asset('storage/'.$product->foto) }}" class="product-img" alt="{{ $product->nama }}">
-                            @else
-                                <div class="product-img bg-light d-flex align-items-center justify-content-center text-muted">
-                                    <i class="fa-regular fa-image"></i>
-                                </div>
-                            @endif
-                        </td>
-                        <td class="fw-bold text-dark">{{ $product->nama }}</td>
-                        <td>Rp {{ number_format($product->harga_beli, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($product->harga_jual, 0, ',', '.') }}</td>
-                        <td>
+                        <div class="position-absolute top-0 end-0 m-2">
                             @if($product->stok <= 10)
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-1 fw-bold">
-                                    {{ $product->stok }}
+                                <span class="badge badge-grey-dark rounded-pill px-3 py-1.5 fw-bold fs-7 shadow-sm">
+                                    Stok: {{ $product->stok }}
                                 </span>
                             @elseif($product->stok <= 30)
-                                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill px-3 py-1 fw-bold">
-                                    {{ $product->stok }}
+                                <span class="badge badge-grey-medium rounded-pill px-3 py-1.5 fw-bold fs-7 shadow-sm">
+                                    Stok: {{ $product->stok }}
                                 </span>
                             @else
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 fw-bold">
-                                    {{ $product->stok }}
+                                <span class="badge badge-grey-light rounded-pill px-3 py-1.5 fw-bold fs-7 shadow-sm">
+                                    Stok: {{ $product->stok }}
                                 </span>
                             @endif
-                        </td>
-                        <td class="text-center">
-                            <div class="d-inline-flex gap-1">
-                                @can('view', $product)
-                                <a href="{{ route('produk.show', $product) }}" 
-                                   class="btn btn-info btn-action-text text-white shadow-sm">
-                                    Detail
-                                </a>
-                                @endcan
+                        </div>
+                    </div>
 
-                                @can('update', $product)
-                                <a href="{{ route('produk.edit', $product) }}" 
-                                   class="btn btn-warning btn-action-text text-dark shadow-sm">
-                                    Edit
-                                </a>
-                                @endcan
+                    <!-- Detail Informasi Produk -->
+                    <div class="card-body d-flex flex-column justify-content-between p-3">
+                        <div>
+                            <!-- Judul Tampil Penuh -->
+                            <h6 class="fw-bold text-dark product-title mb-2">
+                                {{ $product->nama }}
+                            </h6>
+                            <p class="text-secondary fs-7 mb-3">
+                                <i class="fa-solid fa-circle-user me-1 text-secondary"></i>{{ $product->user->name }}
+                            </p>
 
-                                @can('delete', $product)
-                                <form action="{{ route('produk.destroy', $product) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-action-text text-white shadow-sm" 
-                                            onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
-                                        Hapus
-                                    </button>
-                                </form>
-                                @endcan
+                            <!-- Menampilkan Harga Jual dengan Warna Abu-abu Gelap -->
+                            <div class="bg-light p-3 rounded-3 mb-3 border d-flex justify-content-between align-items-center">
+                                <span class="fs-7 fw-semibold text-muted">Harga</span>
+                                <span class="fw-bold text-dark fs-6">Rp {{ number_format($product->harga_jual, 0, ',', '.') }}</span>
                             </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="8" class="text-center py-5 text-muted">
-                            <i class="fa-solid fa-box-open fa-3x mb-3 text-secondary opacity-50"></i>
-                            <p class="mb-0">Data produk tidak tersedia.</p>
-                        </td>
-                    </tr>
-                @endforelse
-                </tbody>
-            </table>
-        </div>
+                        </div>
+
+                        <!-- Tombol Aksi -->
+                        <div class="d-flex gap-1 pt-2 border-top">
+                            @can('view', $product)
+                            <a href="{{ route('produk.show', $product) }}" 
+                               class="btn btn-sm btn-outline-secondary rounded-pill flex-fill fw-bold px-1">
+                                Detail
+                            </a>
+                            @endcan
+
+                            @can('update', $product)
+                            <a href="{{ route('produk.edit', $product) }}" 
+                               class="btn btn-sm btn-outline-dark rounded-pill flex-fill fw-bold px-1">
+                                Edit
+                            </a>
+                            @endcan
+
+                            @can('delete', $product)
+                            <form action="{{ route('produk.destroy', $product) }}" method="POST" class="flex-fill">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-outline-slate-danger rounded-pill w-100 fw-bold px-1" 
+                                        onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
+                                    Hapus
+                                </button>
+                            </form>
+                            @endcan
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        @empty
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4 text-center py-5">
+                    <i class="fa-solid fa-box-open fa-3x mb-3 text-secondary opacity-50"></i>
+                    <p class="mb-0 fw-semibold text-muted">Data produk tidak tersedia.</p>
+                </div>
+            </div>
+        @endforelse
     </div>
 
     <!-- Pagination -->
-    <div class="mt-4 d-flex justify-content-end">
+    <div class="d-flex justify-content-end">
         {{ $products->links() }}
     </div>
 

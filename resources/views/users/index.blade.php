@@ -11,86 +11,170 @@
 
 <style>
     body {
-        background-color: #f3f4f6;
+        /* Background aplikasi Slate Grey sangat muda */
+        background-color: #f1f5f9;
+        color: #334155;
     }
     
-    /* Hero Header Banner Colorful untuk Users (Aksen Oranye-Merah-Pink) */
+    /* Hero Header Banner - Tema Slate Grey Modern */
     .hero-banner-users {
-        background: linear-gradient(135deg, #f97316 0%, #ef4444 50%, #ec4899 100%);
-        border-radius: 20px;
+        background: linear-gradient(135deg, #334155 0%, #475569 100%);
+        border-radius: 24px;
         color: white;
-        padding: 2rem;
-        box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.4);
+        padding: 2rem 2.5rem;
+        box-shadow: 0 10px 25px -5px rgba(51, 65, 85, 0.25);
     }
 
-    /* Form Pencarian Modern */
+    .hero-banner-users .text-white-50 {
+        color: #94a3b8 !important;
+    }
+
+    /* Icon Box di Banner */
+    .icon-box-banner {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        width: 60px;
+        height: 60px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Styling Box Pencarian */
     .search-card {
         background: #ffffff;
-        border: 2px solid #e5e7eb;
+        border: 2px solid #e2e8f0;
         border-radius: 16px;
         transition: all 0.3s ease;
     }
     .search-card:focus-within {
-        border-color: #f97316;
-        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+        border-color: #475569;
+        box-shadow: 0 0 0 4px rgba(51, 65, 85, 0.12);
     }
 
-    /* Custom Gradient Buttons */
+    /* Button Transparan Header */
     .btn-gradient-light {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(8px);
         color: white;
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         transition: all 0.3s ease;
     }
     .btn-gradient-light:hover {
         background: white;
-        color: #ea580c;
+        color: #0f172a;
         transform: translateY(-2px);
     }
 
-    .btn-gradient-orange {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    /* Button Slate Grey */
+    .btn-gradient-slate {
+        background: linear-gradient(135deg, #334155 0%, #475569 100%);
         color: white;
         border: none;
+        transition: all 0.3s ease;
     }
-    .btn-gradient-orange:hover {
-        background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    .btn-gradient-slate:hover {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
         color: white;
     }
 
-    /* Table Header Gradient */
-    .table-header-gradient {
-        background: linear-gradient(90deg, #ea580c 0%, #dc2626 100%);
-        color: white;
+    /* Header Table Card */
+    .card-header-slate {
+        background-color: #f8fafc;
+        color: #1e293b;
+        border-bottom: 1px solid #e2e8f0 !important;
+        padding: 1.25rem 1.5rem;
     }
 
-    /* Style Tombol Aksi Berteks */
-    .btn-action-text {
-        font-size: 0.825rem;
-        font-weight: 600;
-        padding: 0.35rem 0.85rem;
-        border-radius: 50rem;
+    /* --- SKEMA TOMBOL AKSI SEJAJAR & RAPI --- */
+    .action-grid {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 6px; /* Jarak presisi antar tombol */
+        width: 100%;
+    }
+
+    /* Menghilangkan margin bawaan tag form agar tidak merusak alignment Flexbox */
+    .action-grid form {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: inline-flex;
+    }
+
+    /* Styling Tombol Aksi Berteks (Outlined Pill Seragam) */
+    .btn-action-outline {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 82px;            /* Lebar tombol seragam */
+        height: 32px;           /* Tinggi tombol seragam */
+        font-size: 0.8rem;
+        font-weight: 700;
+        border-radius: 50rem;   /* Bentuk pill lonjong */
+        background-color: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+        box-sizing: border-box;
+        line-height: 1;
+        white-space: nowrap;
         transition: all 0.2s ease-in-out;
     }
-    .btn-action-text:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    /* Warna Border Slate (Edit) */
+    .btn-outline-slate {
+        border: 1.5px solid #94a3b8;
+        color: #475569;
+    }
+    .btn-outline-slate:hover {
+        background-color: #f8fafc;
+        border-color: #475569;
+        color: #0f172a;
+    }
+
+    /* Warna Border Merah Koridor (Hapus) */
+    .btn-outline-danger-custom {
+        border: 1.5px solid #f87171;
+        color: #ef4444;
+    }
+    .btn-outline-danger-custom:hover {
+        background-color: #fef2f2;
+        border-color: #dc2626;
+        color: #b91c1c;
+    }
+
+    /* Custom Badges Monokrom Elegan */
+    .badge-mono-admin {
+        background-color: #e2e8f0;
+        color: #1e293b;
+        border: 1px solid #cbd5e1;
+    }
+
+    .badge-mono-kasir {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    .fs-7 {
+        font-size: 0.85rem;
     }
 </style>
 
 <div class="container py-4">
 
-    <!-- 1. Colorful Hero Header Section -->
+    <!-- 1. Hero Header Section - Slate Grey Theme -->
     <div class="hero-banner-users mb-4">
         <div class="row align-items-center">
             <div class="col-md-7">
-                <div class="d-flex align-items-center gap-3 mb-2">
-                    <div class="p-3 bg-white bg-opacity-25 rounded-circle d-inline-flex align-items-center justify-content-center">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-box-banner">
                         <i class="fa-solid fa-users-gear fa-2x text-white"></i>
                     </div>
                     <div>
-                        <h2 class="fw-bold mb-0">Halaman Pengguna</h2>
+                        <h2 class="fw-bold mb-1">Halaman Pengguna</h2>
                         <p class="mb-0 text-white-50">Kelola data hak akses dan akun pengguna aplikasi POS</p>
                     </div>
                 </div>
@@ -104,12 +188,12 @@
         </div>
     </div>
 
-    <!-- 2. Colorful Search Box Section -->
-    <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <!-- 2. Search Box Section -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4" style="border: 1px solid #e2e8f0 !important;">
         <div class="card-body p-3">
             <form action="{{ route('admin.users') }}" method="GET">
                 <div class="input-group search-card p-1">
-                    <span class="input-group-text bg-transparent border-0 text-danger ps-3">
+                    <span class="input-group-text bg-transparent border-0 text-secondary ps-3">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
                     <input 
@@ -117,8 +201,8 @@
                         name="search" 
                         value="{{ request('search') }}" 
                         class="form-control border-0 shadow-none bg-transparent" 
-                        placeholder="Search username or email...">
-                    <button class="btn btn-gradient-orange rounded-3 px-4 fw-bold" type="submit">
+                        placeholder="Cari username atau email...">
+                    <button class="btn btn-gradient-slate rounded-3 px-4 fw-bold" type="submit">
                         Cari
                     </button>
                 </div>
@@ -126,69 +210,70 @@
         </div>
     </div>
 
-    <!-- 3. Colorful Data Table Section -->
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <!-- 3. Data Table Section -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4" style="border: 1px solid #e2e8f0 !important;">
         
-        <div class="card-header table-header-gradient py-3 px-4 d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold mb-0">
-                <i class="fa-solid fa-users text-white me-2"></i>Daftar Pengguna
+        <div class="card-header card-header-slate d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0 fs-6">
+                <i class="fa-solid fa-users text-slate-500 me-2"></i>Daftar Pengguna
             </h5>
-            <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-bold">
+            <span class="badge bg-white text-dark border rounded-pill px-3 py-1.5 fw-bold" style="font-size: 0.75rem;">
                 Total: {{ $users->total() }} User
             </span>
         </div>
 
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light text-secondary text-uppercase fs-7">
+                <thead class="bg-slate-50 text-uppercase fs-7" style="background-color: #f8fafc; color: #64748b;">
                     <tr>
-                        <th class="ps-4">#</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th class="text-center" width="200">Aksi</th>
+                        <th class="ps-4 py-3">#</th>
+                        <th class="py-3">Nama</th>
+                        <th class="py-3">Email</th>
+                        <th class="py-3">Role</th>
+                        <th class="text-center py-3" width="220">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                 @forelse($users as $user)
-                    <tr>
+                    <tr class="border-bottom" style="border-color: #f1f5f9 !important;">
                         <td class="ps-4 fw-bold text-muted">{{ $users->firstItem() + $loop->index }}</td>
                         
                         <td>
                             <span class="fw-bold text-dark">
-                                <i class="fa-solid fa-circle-user text-secondary me-1"></i>{{ $user->name }}
+                                <i class="fa-solid fa-circle-user text-slate-400 me-1"></i>{{ $user->name }}
                             </span>
                         </td>
 
                         <td>
                             <span class="text-muted">
-                                <i class="fa-regular fa-envelope me-1"></i>{{ $user->email }}
+                                <i class="fa-regular fa-envelope text-slate-400 me-1"></i>{{ $user->email }}
                             </span>
                         </td>
 
                         <td>
                             @if($user->role->name == 'admin')
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 fw-bold">
+                                <span class="badge badge-mono-admin rounded-pill px-3 py-1 fw-bold">
                                     <i class="fa-solid fa-user-shield me-1"></i>Admin
                                 </span>
                             @else
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 fw-bold">
+                                <span class="badge badge-mono-kasir rounded-pill px-3 py-1 fw-bold">
                                     <i class="fa-solid fa-cash-register me-1"></i>Kasir
                                 </span>
                             @endif
                         </td>
 
                         <td class="text-center">
-                            <div class="d-inline-flex gap-1">
+                            <div class="action-grid">
                                 <a href="{{ route('admin.users.edit', $user) }}" 
-                                   class="btn btn-warning btn-action-text text-dark shadow-sm">
+                                   class="btn-action-outline btn-outline-slate">
                                     Edit
                                 </a>
 
-                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline">
+                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-action-text text-white shadow-sm" 
+                                    <button type="submit" 
+                                            class="btn-action-outline btn-outline-danger-custom" 
                                             onclick="return confirm('Yakin hapus user ini?')">
                                         Hapus
                                     </button>
@@ -198,9 +283,9 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">
-                            <i class="fa-solid fa-user-slash fa-3x mb-3 text-secondary opacity-50"></i>
-                            <p class="mb-0">Data user tidak ditemukan.</p>
+                        <td colspan="5" class="text-center py-5 text-muted bg-white">
+                            <i class="fa-solid fa-user-slash fa-3x mb-3 text-slate-400 opacity-50"></i>
+                            <p class="mb-0 fw-bold">Data user tidak ditemukan.</p>
                         </td>
                     </tr>
                 @endforelse

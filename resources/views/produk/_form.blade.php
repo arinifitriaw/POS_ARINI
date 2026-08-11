@@ -130,7 +130,7 @@
                 class="btn btn-success rounded-pill px-4"
                 type="submit">
 
-                Update Product
+                Perbarui Produk
 
             </button>
 

@@ -161,7 +161,8 @@ class PenjualanController extends Controller
     public function update(Request $request, Penjualan $penjualan)
     {
         $request->validate([
-           'payment_method' => 'required'
+            'payment_method' => 'required',
+            'ukuran_baju' => 'required|in:S,M,L,XL,XXL',
         ]);
 
         if ($penjualan->status !== 'OPEN') {
@@ -177,6 +178,7 @@ class PenjualanController extends Controller
 
             $penjualan->update([
                 'metode_pembayaran' => $request->payment_method,
+                'ukuran_baju'       => $request->ukuran_baju,
                 'total_pembayaran'  => $total,
                 'status'            => 'COMPLETED'
             ]);

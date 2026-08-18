@@ -19,6 +19,8 @@ class ProdukController extends Controller
     {
         $this->authorize('viewAny', Produk::class);
 
+        
+
         $keyword = $request->input('search');
 
         if($keyword) {

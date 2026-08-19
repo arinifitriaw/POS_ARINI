@@ -6,8 +6,9 @@
 
 @include('layouts.navbar')
 
-<!-- CDN FontAwesome untuk Icon -->
+<!-- CDN FontAwesome & SweetAlert2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     body {
@@ -109,11 +110,11 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 82px;            /* Lebar tombol seragam */
-        height: 32px;           /* Tinggi tombol seragam */
+        width: 82px;           /* Lebar tombol seragam */
+        height: 32px;          /* Tinggi tombol seragam */
         font-size: 0.8rem;
         font-weight: 700;
-        border-radius: 50rem;   /* Bentuk pill lonjong */
+        border-radius: 50rem;  /* Bentuk pill lonjong */
         background-color: #ffffff;
         text-decoration: none;
         cursor: pointer;
@@ -160,6 +161,148 @@
 
     .fs-7 {
         font-size: 0.85rem;
+    }
+
+    /* CUSTOM SWEETALERT2 STYLING PRESISI DENGAN GAMBAR DESIGN */
+    .custom-swal-popup {
+        border-radius: 24px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        width: 440px !important;
+        max-width: 90vw !important;
+        font-family: inherit !important;
+    }
+
+    .custom-swal-header {
+        background-color: #435266;
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .custom-swal-header-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .custom-swal-icon-box {
+        background-color: rgba(255, 255, 255, 0.15);
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #ffffff;
+    }
+
+    .custom-swal-title-text h5 {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.2;
+    }
+
+    .custom-swal-title-text p {
+        margin: 2px 0 0 0;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+    }
+
+    .custom-swal-close-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        color: #ffffff;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .custom-swal-close-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .custom-swal-body {
+        padding: 24px;
+        background-color: #ffffff;
+        text-align: center;
+    }
+
+    .custom-swal-main-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 20px;
+        line-height: 1.35;
+    }
+
+    .custom-swal-warning-box {
+        background-color: #fff7ed;
+        border: 1px solid #ffedd5;
+        border-radius: 12px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #c2410c;
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-align: left;
+        margin-bottom: 24px;
+    }
+
+    .custom-swal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .custom-swal-btn-cancel {
+        flex: 1;
+        background-color: #f1f5f9 !important;
+        color: #334155 !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+    .custom-swal-btn-cancel:hover {
+        background-color: #e2e8f0 !important;
+    }
+
+    .custom-swal-btn-confirm {
+        flex: 1;
+        background-color: #dc2626 !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+    .custom-swal-btn-confirm:hover {
+        background-color: #b91c1c !important;
     }
 </style>
 
@@ -269,12 +412,12 @@
                                     Edit
                                 </a>
 
-                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
+                                <form id="delete-user-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
+                                    <button type="button" 
                                             class="btn-action-outline btn-outline-danger-custom" 
-                                            onclick="return confirm('Yakin hapus user ini?')">
+                                            onclick="confirmDeleteUser({{ $user->id }}, '{{ addslashes($user->name) }}')">
                                         Hapus
                                     </button>
                                 </form>
@@ -300,5 +443,51 @@
     </div>
 
 </div>
+
+<!-- JavaScript SweetAlert2 Trigger Function -->
+<script>
+    function confirmDeleteUser(id, userName) {
+        Swal.fire({
+            html: `
+                <div class="custom-swal-header">
+                    <div class="custom-swal-header-left">
+                        <div class="custom-swal-icon-box">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </div>
+                        <div class="custom-swal-title-text">
+                            <h5>Hapus Pengguna</h5>
+                            <p>Konfirmasi tindakan</p>
+                        </div>
+                    </div>
+                    <button class="custom-swal-close-btn" onclick="Swal.close()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="custom-swal-body">
+                    <div class="custom-swal-main-title">
+                        Apakah kamu yakin ingin menghapus pengguna ini?
+                    </div>
+                    <div class="custom-swal-warning-box">
+                        <i class="fa-solid fa-triangle-exclamation fs-5"></i>
+                        <span>Data akun pengguna yang dihapus tidak dapat dikembalikan.</span>
+                    </div>
+                    <div class="custom-swal-actions">
+                        <button class="custom-swal-btn-cancel" onclick="Swal.close()">
+                            <i class="fa-solid fa-arrow-left"></i> Batal
+                        </button>
+                        <button class="custom-swal-btn-confirm" onclick="document.getElementById('delete-user-form-${id}').submit()">
+                            <i class="fa-solid fa-trash-can"></i> Ya, Hapus
+                        </button>
+                    </div>
+                </div>
+            `,
+            showConfirmButton: false,
+            showCancelButton: false,
+            customClass: {
+                popup: 'custom-swal-popup'
+            }
+        });
+    }
+</script>
 
 @endsection

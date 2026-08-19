@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'POS - Tambah & Edit Penjualan')
+@section('title')
 
 @section('content')
 
@@ -342,7 +342,7 @@
                     <div>
 
                         <h2 class="fw-bold mb-1">
-                            Tambah & Edit Penjualan
+                            Tambah & Lanjutkan Penjualan
                         </h2>
 
                         <p class="mb-0 text-white-50">
@@ -815,19 +815,21 @@
                                     required
                                     {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
 
-                                <option value="">
-                                    -- Pilih Pembayaran --
+                                <option value=""
+                                {{ empty($sale->metode_pembayaran) ? 'selected' : '' }}>
+                                -- Pilih Pembayaran --
                                 </option>
 
                                 <option value="CASH"
-                                    {{ $sale->metode_pembayaran === 'CASH' ? 'selected' : '' }}>
-                                    CASH
+                                {{ $sale->metode_pembayaran === 'CASH' ? 'selected' : '' }}>
+                                CASH
                                 </option>
 
                                 <option value="QRIS"
-                                    {{ $sale->metode_pembayaran === 'QRIS' ? 'selected' : '' }}>
-                                    QRIS
-                                </option>
+                                {{ $sale->metode_pembayaran === 'QRIS' ? 'selected' : '' }}>
+                                QRIS
+                                </option>   
+
 
                             </select>
 

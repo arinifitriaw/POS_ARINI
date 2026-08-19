@@ -6,8 +6,9 @@
 
 @include('layouts.navbar')
 
-<!-- CDN FontAwesome -->
+<!-- CDN FontAwesome & SweetAlert2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     body {
@@ -76,7 +77,6 @@
         box-shadow: 0 16px 25px -5px rgba(51, 65, 85, 0.1) !important;
     }
 
-    /* Mengubah object-fit menjadi contain agar foto kelihatan full */
     .product-card-img {
         height: 190px;
         object-fit: contain;
@@ -96,7 +96,6 @@
         font-size: 0.825rem;
     }
 
-    /* Style Judul Supaya Tidak Terpotong */
     .product-title {
         word-wrap: break-word;
         overflow-wrap: break-word;
@@ -105,32 +104,161 @@
         min-height: 2.8rem;
     }
 
-    /* Custom Badges Monokrom Abu-abu */
-    .badge-grey-dark {
-        background-color: #0f172a;
-        color: #ffffff;
-    }
+    .badge-grey-dark { background-color: #0f172a; color: #ffffff; }
+    .badge-grey-medium { background-color: #475569; color: #ffffff; }
+    .badge-grey-light { background-color: #94a3b8; color: #ffffff; }
 
-    .badge-grey-medium {
-        background-color: #475569;
-        color: #ffffff;
-    }
-
-    .badge-grey-light {
-        background-color: #94a3b8;
-        color: #ffffff;
-    }
-
-    /* Custom Outline Button Monokrom untuk Hapus */
     .btn-outline-slate-danger {
         color: #334155;
         border-color: #94a3b8;
         transition: all 0.2s ease;
     }
     .btn-outline-slate-danger:hover {
-        background-color: #0f172a;
-        border-color: #0f172a;
+        background-color: #dc2626;
+        border-color: #dc2626;
         color: #ffffff;
+    }
+
+    /* CUSTOM SWEETALERT2 STYLING SESUAI GAMBAR ACUAN */
+    .custom-swal-popup {
+        border-radius: 24px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        width: 440px !important;
+        max-width: 90vw !important;
+        font-family: inherit !important;
+    }
+
+    .custom-swal-header {
+        background-color: #435266;
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .custom-swal-header-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .custom-swal-icon-box {
+        background-color: rgba(255, 255, 255, 0.15);
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #ffffff;
+    }
+
+    .custom-swal-title-text h5 {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.2;
+    }
+
+    .custom-swal-title-text p {
+        margin: 2px 0 0 0;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+    }
+
+    .custom-swal-close-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        color: #ffffff;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .custom-swal-close-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .custom-swal-body {
+        padding: 24px;
+        background-color: #ffffff;
+        text-align: center;
+    }
+
+    .custom-swal-main-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 20px;
+        line-height: 1.35;
+    }
+
+    .custom-swal-warning-box {
+        background-color: #fff7ed;
+        border: 1px solid #ffedd5;
+        border-radius: 12px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #c2410c;
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-align: left;
+        margin-bottom: 24px;
+    }
+
+    .custom-swal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .custom-swal-btn-cancel {
+        flex: 1;
+        background-color: #f1f5f9 !important;
+        color: #334155 !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+    .custom-swal-btn-cancel:hover {
+        background-color: #e2e8f0 !important;
+    }
+
+    .custom-swal-btn-confirm {
+        flex: 1;
+        background-color: #dc2626 !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+    .custom-swal-btn-confirm:hover {
+        background-color: #b91c1c !important;
     }
 </style>
 
@@ -192,13 +320,13 @@
         </div>
     </div>
 
-    <!-- 3. Grid Produk Ke Samping -->
+    <!-- 3. Grid Produk -->
     <div class="row g-4 mb-4">
         @forelse ($products as $product)
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="card shadow-sm rounded-4 h-100 product-card overflow-hidden">
                     
-                    <!-- Foto & Badge Stok Monokrom -->
+                    <!-- Foto & Badge Stok -->
                     <div class="position-relative">
                         @if($product->foto)
                             <img src="{{ asset('storage/'.$product->foto) }}" class="product-card-img" alt="{{ $product->nama }}">
@@ -229,7 +357,6 @@
                     <!-- Detail Informasi Produk -->
                     <div class="card-body d-flex flex-column justify-content-between p-3">
                         <div>
-                            <!-- Judul Tampil Penuh -->
                             <h6 class="fw-bold text-dark product-title mb-2">
                                 {{ $product->nama }}
                             </h6>
@@ -237,7 +364,6 @@
                                 <i class="fa-solid fa-circle-user me-1 text-secondary"></i>{{ $product->user->name }}
                             </p>
 
-                            <!-- Menampilkan Harga Jual dengan Warna Abu-abu Gelap -->
                             <div class="bg-light p-3 rounded-3 mb-3 border d-flex justify-content-between align-items-center">
                                 <span class="fs-7 fw-semibold text-muted">Harga</span>
                                 <span class="fw-bold text-dark fs-6">Rp {{ number_format($product->harga_jual, 0, ',', '.') }}</span>
@@ -261,11 +387,12 @@
                             @endcan
 
                             @can('delete', $product)
-                            <form action="{{ route('produk.destroy', $product) }}" method="POST" class="flex-fill">
+                            <form id="delete-form-{{ $product->id }}" action="{{ route('produk.destroy', $product) }}" method="POST" class="flex-fill">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-outline-slate-danger rounded-pill w-100 fw-bold px-1" 
-                                        onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-slate-danger rounded-pill w-100 fw-bold px-1" 
+                                        onclick="confirmDelete({{ $product->id }}, '{{ addslashes($product->nama) }}')">
                                     Hapus
                                 </button>
                             </form>
@@ -291,5 +418,51 @@
     </div>
 
 </div>
+
+<!-- Script SweetAlert Custom Modifikasi -->
+<script>
+    function confirmDelete(id, productName) {
+        Swal.fire({
+            html: `
+                <div class="custom-swal-header">
+                    <div class="custom-swal-header-left">
+                        <div class="custom-swal-icon-box">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </div>
+                        <div class="custom-swal-title-text">
+                            <h5>Hapus Produk</h5>
+                            <p>Konfirmasi tindakan</p>
+                        </div>
+                    </div>
+                    <button class="custom-swal-close-btn" onclick="Swal.close()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="custom-swal-body">
+                    <div class="custom-swal-main-title">
+                        Apakah kamu yakin ingin menghapus produk ini?
+                    </div>
+                    <div class="custom-swal-warning-box">
+                        <i class="fa-solid fa-triangle-exclamation fs-5"></i>
+                        <span>Data produk yang dihapus tidak dapat dikembalikan.</span>
+                    </div>
+                    <div class="custom-swal-actions">
+                        <button class="custom-swal-btn-cancel" onclick="Swal.close()">
+                            <i class="fa-solid fa-arrow-left"></i> Batal
+                        </button>
+                        <button class="custom-swal-btn-confirm" onclick="document.getElementById('delete-form-${id}').submit()">
+                            <i class="fa-solid fa-trash-can"></i> Ya, Hapus
+                        </button>
+                    </div>
+                </div>
+            `,
+            showConfirmButton: false,
+            showCancelButton: false,
+            customClass: {
+                popup: 'custom-swal-popup'
+            }
+        });
+    }
+</script>
 
 @endsection

@@ -193,6 +193,7 @@
                                     <th class="ps-4 py-3" width="70">NO</th>
                                     <th class="py-3" width="100">FOTO</th>
                                     <th class="py-3">NAMA PRODUK</th>
+                                    <th class="py-3 text-center" width="100">UKURAN</th>
                                     <th class="py-3 text-center" width="120">QTY</th>
                                     <th class="pe-4 py-3 text-end" width="160">HARGA SATUAN</th>
                                 </tr>
@@ -223,6 +224,13 @@
                                         {{ $item->produk->nama ?? 'Produk Dihapus' }}
                                     </td>
 
+                                    <!-- Ukuran Baju -->
+                                    <td class="text-center">
+                                    <span class="badge bg-secondary text-white px-3 py-1 rounded-pill fw-bold">
+                                    {{ $sale->ukuran_baju ?? '-' }}
+                                    </span>
+                                    </td>
+
                                     <!-- Kuantitas/Qty -->
                                     <td class="text-center">
                                         <span class="badge bg-light text-dark border px-3 py-1.5 fw-bold rounded-pill">
@@ -237,7 +245,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center py-5 text-muted">
+                                    <td colspan="6" class="text-center py-5 text-muted">
                                         <i class="fa-solid fa-cart-flatbed fa-3x mb-3 text-slate-400 opacity-50"></i>
                                         <p class="mb-0 fw-bold">Tidak ada produk dalam transaksi ini</p>
                                     </td>

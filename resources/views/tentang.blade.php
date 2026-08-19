@@ -148,10 +148,11 @@
                     <h5 class="section-title mb-0">Tentang Saya</h5>
                 </div>
                 <p class="text-secondary mb-0">
-                    Halo, saya <strong>Arini Fitria Wulandari</strong>. Saya adalah seorang
-                    yang tertarik pada dunia pemrograman dan pengembangan aplikasi.
-                    Saya memiliki minat dalam membuat aplikasi berbasis web yang
-                    sederhana, modern, dan mudah digunakan.
+                    Halo, saya <strong>Arini Fitria Wulandari</strong>. Saya adalah pengembang aplikasi yang
+                     memiliki ketertarikan pada dunia pemrograman dan pengembangan
+                      sistem berbasis web. Melalui aplikasi ini, saya mengembangkan
+                       sistem kasir untuk membantu proses pengelolaan toko Syntez Official,
+                        yaitu toko yang menyediakan produk pakaian seperti Baju Polo.
                 </p>
             </div>
         </div>
@@ -166,10 +167,11 @@
                     <h5 class="section-title mb-0">Tentang Aplikasi</h5>
                 </div>
                 <p class="text-secondary mb-0">
-                    Aplikasi ini dibuat untuk membantu pengguna dalam mengelola
-                    data produk dan transaksi penjualan. Aplikasi ini memiliki
-                    beberapa fitur seperti pengelolaan pengguna, produk, penjualan,
-                    dan item penjualan.
+                    Aplikasi Syntez Official merupakan sistem kasir atau Point Of Sale (POS)
+                    yang dibuat untuk membantu mengelola kegiatan penjualan produk Baju Polo.
+                    Aplikasi ini menyediakan fitur untuk mengelola data pengguna, produk, stok,
+                    serta transaksi penjualan. Dengan adanya aplikasi ini, proses pencatatan produk 
+                    dan transaksi diharapkan menjadi lebih teratur, mudah, dan efisien.
                 </p>
             </div>
         </div>

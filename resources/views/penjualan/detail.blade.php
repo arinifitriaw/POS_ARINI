@@ -443,7 +443,7 @@
                                 <tr>
 
                                     <th class="ps-4 py-3" width="70">
-                                        NO
+                                        NOO
                                     </th>
 
                                     <th class="py-3" width="100">

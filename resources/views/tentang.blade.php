@@ -188,7 +188,7 @@
                 
                 <ul class="tech-list mb-0">
                     <li>
-                        <strong>Bahasa Pemrograman:</strong> PHP, JavaScript
+                        <strong>Bahasa Pemograman:</strong> PHP, JavaScript
                     </li>
                     <li>
                         <strong>Framework:</strong> Laravel

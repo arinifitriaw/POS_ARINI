@@ -11,12 +11,10 @@
 
 <style>
     body {
-        /* Background aplikasi Slate Grey sangat muda */
         background-color: #f1f5f9;
         color: #334155;
     }
 
-    /* Hero Banner - Tema Slate Grey Modern */
     .hero-banner-sales {
         background: linear-gradient(135deg, #334155 0%, #475569 100%);
         border-radius: 24px;
@@ -29,7 +27,6 @@
         color: #94a3b8 !important;
     }
 
-    /* Icon Box di Banner */
     .icon-box-banner {
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
@@ -41,7 +38,6 @@
         justify-content: center;
     }
 
-    /* Header Card Slate */
     .card-header-slate {
         background-color: #f8fafc;
         color: #1e293b;
@@ -49,7 +45,6 @@
         padding: 1.25rem 1.5rem;
     }
 
-    /* Button Light Transparan Header */
     .btn-gradient-light {
         background: rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(8px);
@@ -64,7 +59,6 @@
         transform: translateY(-2px);
     }
 
-    /* Label Field Information */
     .info-label {
         color: #64748b;
         font-weight: 700;
@@ -73,9 +67,7 @@
         letter-spacing: 0.5px;
     }
 
-    /* =========================
-       PRINT STYLE
-    ========================= */
+    /* PRINT STYLE */
     @media print {
 
         @page {
@@ -88,7 +80,6 @@
             color: #000 !important;
         }
 
-        /* Sembunyikan elemen yang tidak perlu dicetak */
         .no-print,
         nav,
         .navbar,
@@ -103,7 +94,6 @@
             margin: 0 !important;
         }
 
-        /* Banner tetap terlihat */
         .hero-banner-sales {
             background: #334155 !important;
             color: white !important;
@@ -125,7 +115,6 @@
             print-color-adjust: exact;
         }
 
-        /* Card */
         .card {
             box-shadow: none !important;
             border: 1px solid #cbd5e1 !important;
@@ -138,7 +127,6 @@
             print-color-adjust: exact;
         }
 
-        /* Tabel */
         .table {
             width: 100% !important;
         }
@@ -148,23 +136,26 @@
             border-color: #cbd5e1 !important;
         }
 
-        /* Badge */
         .badge {
             border: 1px solid #cbd5e1 !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
-        /* Foto produk */
         img {
             max-width: 55px !important;
             max-height: 55px !important;
         }
 
-        /* Jangan memotong card */
         .row,
         .card {
             break-inside: avoid;
+        }
+
+        /* QRIS saat print */
+        .qris-image {
+            max-width: 220px !important;
+            max-height: 220px !important;
         }
     }
 </style>
@@ -392,6 +383,39 @@
                         </span>
 
                     </div>
+
+
+                    <!-- =========================
+                         QRIS PEMBAYARAN
+                    ========================== -->
+                    @if($sale->metode_pembayaran === 'QRIS')
+
+                        <div class="mt-4 pt-4 border-top text-center">
+
+                            <span class="info-label d-block mb-3">
+                                QRIS PEMBAYARAN
+                            </span>
+
+                            <div class="d-inline-block p-3 bg-white rounded-4 border shadow-sm">
+
+                                <img src="{{ asset('storage/images/qris.jpeg') }}"
+                                     alt="QRIS Pembayaran"
+                                     class="qris-image"
+                                     style="width: 220px; height: 220px; object-fit: contain;">
+
+                            </div>
+
+                            <p class="mt-3 mb-1 fw-bold text-dark">
+                                Scan QRIS untuk melakukan pembayaran
+                            </p>
+
+                            <p class="text-muted small mb-0">
+                                Total: Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
+                            </p>
+
+                        </div>
+
+                    @endif
 
                 </div>
 

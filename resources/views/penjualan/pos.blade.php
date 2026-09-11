@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
+@section('title', 'Tambah Penjualan')
 
 @section('content')
 
@@ -111,6 +111,19 @@
         background-color: #f8fafc;
         border: 1px solid #e2e8f0;
         border-radius: 14px;
+    }
+
+    /* QRIS */
+    .qris-payment-box {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+    }
+
+    .qris-payment-image {
+        width: 220px;
+        height: 220px;
+        object-fit: contain;
     }
 
 
@@ -294,6 +307,11 @@
 
         .delete-modal-footer {
             padding: 0 18px 18px;
+        }
+
+        .qris-payment-image {
+            width: 200px;
+            height: 200px;
         }
     }
 </style>
@@ -811,27 +829,110 @@
                             </label>
 
                             <select name="payment_method"
+                                    id="paymentMethod"
                                     class="form-select rounded-3 py-2 shadow-none border-secondary-subtle"
                                     required
                                     {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
 
                                 <option value=""
                                 {{ empty($sale->metode_pembayaran) ? 'selected' : '' }}>
-                                -- Pilih Pembayaran --
+                                    -- Pilih Pembayaran --
                                 </option>
 
                                 <option value="CASH"
                                 {{ $sale->metode_pembayaran === 'CASH' ? 'selected' : '' }}>
-                                CASH
+                                    CASH
                                 </option>
 
                                 <option value="QRIS"
                                 {{ $sale->metode_pembayaran === 'QRIS' ? 'selected' : '' }}>
-                                QRIS
-                                </option>   
-
+                                    QRIS
+                                </option>
 
                             </select>
+
+                        </div>
+
+
+                        <!-- =========================================================
+                             PEMBAYARAN CASH
+                             ========================================================= -->
+
+                        <div id="cashPayment"
+                             class="total-price-box p-3 mb-3"
+                             style="display: none;">
+
+                            <div class="mb-3">
+
+                                <label class="form-label fw-bold text-secondary fs-7 text-uppercase mb-1">
+                                    Uang Dibayar
+                                </label>
+
+                                <input type="number"
+                                       name="uang_dibayar"
+                                       id="uangDibayar"
+                                       class="form-control rounded-3 py-2 shadow-none border-secondary-subtle"
+                                       placeholder="Masukkan jumlah uang"
+                                       min="0"
+                                       {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
+
+                            </div>
+
+
+                            <div>
+
+                                <label class="form-label fw-bold text-secondary fs-7 text-uppercase mb-1">
+                                    Kembalian
+                                </label>
+
+                                <div id="kembalian"
+                                     class="form-control rounded-3 py-2 bg-light fw-bold text-success">
+
+                                    Rp 0
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================================
+                             QRIS PEMBAYARAN
+                             ========================================================= -->
+
+                        <div id="qrisPayment"
+                             class="qris-payment-box text-center p-3 mb-3"
+                             style="display: none;">
+
+                            <div class="fw-bold text-secondary mb-2">
+
+                                <i class="fa-solid fa-qrcode me-1"></i>
+
+                                QRIS PEMBAYARAN
+
+                            </div>
+
+
+                            <div class="d-inline-block bg-white p-2 rounded-4 border shadow-sm">
+
+                                <img src="{{ asset('storage/images/qris.jpeg') }}"
+                                     alt="QRIS Pembayaran"
+                                     class="qris-payment-image">
+
+                            </div>
+
+
+                            <p class="mt-2 mb-1 fw-bold text-dark">
+                                Scan QRIS untuk melakukan pembayaran
+                            </p>
+
+
+                            <small class="text-muted">
+
+                                Total: Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
+
+                            </small>
 
                         </div>
 
@@ -992,6 +1093,83 @@
 
 
 <script>
+
+    /* =========================================================
+       PEMBAYARAN CASH & QRIS
+       ========================================================= */
+
+    const paymentMethod = document.getElementById('paymentMethod');
+    const qrisPayment = document.getElementById('qrisPayment');
+
+    const cashPayment = document.getElementById('cashPayment');
+    const uangDibayar = document.getElementById('uangDibayar');
+    const kembalian = document.getElementById('kembalian');
+
+    const totalPembayaran = {{ $sale->total_pembayaran }};
+
+
+    function checkPaymentMethod() {
+
+        if (paymentMethod.value === 'QRIS') {
+
+            qrisPayment.style.display = 'block';
+
+            cashPayment.style.display = 'none';
+
+            uangDibayar.value = '';
+
+            kembalian.textContent = 'Rp 0';
+
+        } else if (paymentMethod.value === 'CASH') {
+
+            qrisPayment.style.display = 'none';
+
+            cashPayment.style.display = 'block';
+
+        } else {
+
+            qrisPayment.style.display = 'none';
+
+            cashPayment.style.display = 'none';
+
+            uangDibayar.value = '';
+
+            kembalian.textContent = 'Rp 0';
+
+        }
+
+    }
+
+
+    /* =========================================================
+       HITUNG KEMBALIAN
+       ========================================================= */
+
+    uangDibayar.addEventListener('input', function () {
+
+        const uang = Number(this.value) || 0;
+
+        const hasil = uang - totalPembayaran;
+
+
+        if (hasil >= 0) {
+
+            kembalian.textContent =
+                'Rp ' + hasil.toLocaleString('id-ID');
+
+        } else {
+
+            kembalian.textContent = 'Uang Kurang';
+
+        }
+
+    });
+
+
+    paymentMethod.addEventListener('change', checkPaymentMethod);
+
+    checkPaymentMethod();
+
 
     /* =========================================================
        MODAL CHECKOUT

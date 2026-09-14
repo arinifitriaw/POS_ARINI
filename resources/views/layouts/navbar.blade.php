@@ -2,17 +2,17 @@
   <div class="container-fluid px-4">
 
     <!-- Brand Logo / Title -->
-    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-dark fs-5 me-4"
-       href="{{ route('beranda') }}">
+  <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-dark fs-5 me-4"
+   href="{{ route('tentang.toko') }}">
 
-      <span class="brand-icon text-white rounded-3 px-2 py-1 fs-6 shadow-sm">
-        <i class="bi bi-shop"></i>
-      </span>
+  <span class="brand-icon text-white rounded-3 px-2 py-1 fs-6 shadow-sm">
+    <i class="bi bi-shop"></i>
+  </span>
 
-      <span>
-        Syntez <span class="text-slate-muted">Official</span>
-      </span>
-    </a>
+  <span><strong>Syntez Official</strong></span>
+
+  </a>
+    
 
     <!-- Mobile Toggler Button -->
     <button class="navbar-toggler border-0 shadow-none"

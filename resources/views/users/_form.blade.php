@@ -31,7 +31,7 @@
             <label class="form-label fw-bold">Password</label>
             <input type="password" name="password"
                 class="form-control rounded-3 @error('password') is-invalid @enderror"
-                placeholder="Kosongkan jika tidak diubah">
+                placeholder="Masukan Password">
             @error('password')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror

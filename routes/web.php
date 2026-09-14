@@ -25,6 +25,7 @@ Route::get('/tentang', function () {
 // Route yang bisa diakses ketika user sudah login
 Route::middleware('auth')->group(function () {
 
+    Route::get('/tentang-toko', function () {return view('tentang-toko');})->name('tentang.toko');
     Route::get('/beranda', [DashboardController::class, 'index'])->name('beranda');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -53,5 +54,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('/penjualan', PenjualanController::class);
 
         Route::resource('/itempenjualan', ItemPenjualanController::class);
+        
     });
 });

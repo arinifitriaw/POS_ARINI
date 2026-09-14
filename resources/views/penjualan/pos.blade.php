@@ -320,13 +320,62 @@
 <div class="container py-4">
 
     <!-- Alert Error Handling -->
-    @if(session('errors'))
+
+    @if($errors->any())
 
         <div class="alert alert-danger border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
 
             <i class="fa-solid fa-circle-exclamation me-2"></i>
 
-            {{ session('errors') }}
+            <strong>Checkout gagal!</strong>
+
+            <ul class="mb-0 mt-2">
+
+                @foreach($errors->all() as $error)
+
+                    <li>{{ $error }}</li>
+
+                @endforeach
+
+            </ul>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+
+        </div>
+
+    @endif
+
+
+    @if(session('error'))
+
+        <div class="alert alert-danger border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
+
+            <i class="fa-solid fa-circle-exclamation me-2"></i>
+
+            {{ session('error') }}
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+
+        </div>
+
+    @endif
+
+
+    @if(session('success'))
+
+        <div class="alert alert-success border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
+
+            <i class="fa-solid fa-circle-check me-2"></i>
+
+            {{ session('success') }}
 
             <button type="button"
                     class="btn-close"
@@ -782,6 +831,7 @@
                             </label>
 
                             <select name="ukuran_baju"
+                                    id="ukuranBaju"
                                     class="form-select rounded-3 py-2 shadow-none border-secondary-subtle"
                                     required
                                     {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
@@ -1099,14 +1149,21 @@
        ========================================================= */
 
     const paymentMethod = document.getElementById('paymentMethod');
+
     const qrisPayment = document.getElementById('qrisPayment');
 
     const cashPayment = document.getElementById('cashPayment');
+
     const uangDibayar = document.getElementById('uangDibayar');
+
     const kembalian = document.getElementById('kembalian');
 
     const totalPembayaran = {{ $sale->total_pembayaran }};
 
+
+    /* =========================================================
+       CEK METODE PEMBAYARAN
+       ========================================================= */
 
     function checkPaymentMethod() {
 
@@ -1120,13 +1177,17 @@
 
             kembalian.textContent = 'Rp 0';
 
-        } else if (paymentMethod.value === 'CASH') {
+        }
+
+        else if (paymentMethod.value === 'CASH') {
 
             qrisPayment.style.display = 'none';
 
             cashPayment.style.display = 'block';
 
-        } else {
+        }
+
+        else {
 
             qrisPayment.style.display = 'none';
 
@@ -1152,12 +1213,20 @@
         const hasil = uang - totalPembayaran;
 
 
-        if (hasil >= 0) {
+        if (uang === 0) {
+
+            kembalian.textContent = 'Rp 0';
+
+        }
+
+        else if (hasil >= 0) {
 
             kembalian.textContent =
                 'Rp ' + hasil.toLocaleString('id-ID');
 
-        } else {
+        }
+
+        else {
 
             kembalian.textContent = 'Uang Kurang';
 
@@ -1176,6 +1245,66 @@
        ========================================================= */
 
     function openCheckoutModal() {
+
+        const ukuran = document.getElementById('ukuranBaju').value;
+
+        const metode = paymentMethod.value;
+
+
+        /* CEK UKURAN */
+
+        if (!ukuran) {
+
+            alert('Silakan pilih ukuran baju terlebih dahulu.');
+
+            return;
+
+        }
+
+
+        /* CEK METODE PEMBAYARAN */
+
+        if (!metode) {
+
+            alert('Silakan pilih metode pembayaran terlebih dahulu.');
+
+            return;
+
+        }
+
+
+        /* CEK CASH */
+
+        if (metode === 'CASH') {
+
+            const uang = Number(uangDibayar.value) || 0;
+
+
+            if (uang <= 0) {
+
+                alert('Silakan masukkan uang yang dibayar.');
+
+                uangDibayar.focus();
+
+                return;
+
+            }
+
+
+            if (uang < totalPembayaran) {
+
+                alert('Uang yang dibayar kurang dari total pembayaran.');
+
+                uangDibayar.focus();
+
+                return;
+
+            }
+
+        }
+
+
+        /* TAMPILKAN MODAL */
 
         const modal = document.getElementById('checkoutModal');
 
@@ -1204,7 +1333,9 @@
     }
 
 
-    /* Klik area luar modal */
+    /* =========================================================
+       KLIK DI LUAR MODAL
+       ========================================================= */
 
     document.getElementById('checkoutModal').addEventListener('click', function(event) {
 
@@ -1217,7 +1348,9 @@
     });
 
 
-    /* Tombol ESC */
+    /* =========================================================
+       TOMBOL ESC
+       ========================================================= */
 
     document.addEventListener('keydown', function(event) {
 

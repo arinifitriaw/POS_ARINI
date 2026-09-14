@@ -370,7 +370,7 @@
 
 
                     <!-- Total Pembayaran -->
-                    <div>
+                    <div class="mb-3 pb-3 border-bottom">
 
                         <span class="info-label d-block mb-1">
                             Total Pembayaran
@@ -383,6 +383,43 @@
                         </span>
 
                     </div>
+
+
+                    <!-- =========================
+                         PEMBAYARAN CASH
+                    ========================== -->
+                    @if($sale->metode_pembayaran === 'CASH')
+
+                        <div class="mb-3 pb-3 border-bottom">
+
+                            <span class="info-label d-block mb-1">
+                                Uang Dibayar
+                            </span>
+
+                            <span class="fs-5 fw-bold text-dark">
+
+                                Rp {{ number_format($sale->uang_dibayar ?? 0, 0, ',', '.') }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="mb-3 pb-3 border-bottom">
+
+                            <span class="info-label d-block mb-1">
+                                Kembalian
+                            </span>
+
+                            <span class="fs-4 fw-bold text-success">
+
+                                Rp {{ number_format($sale->kembalian ?? 0, 0, ',', '.') }}
+
+                            </span>
+
+                        </div>
+
+                    @endif
 
 
                     <!-- =========================

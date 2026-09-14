@@ -381,7 +381,7 @@
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden" style="border: 1px solid #e2e8f0 !important;">
                 <div class="card-header card-header-slate d-flex justify-content-between align-items-center">
                     <h6 class="fw-bold mb-0 fs-6">
-                        <i class="fa-solid fa-crown text-secondary me-2"></i>Produk Terlaris (Best Seller Hari Ini)
+                        <i class="fa-solid fa-crown text-secondary me-2"></i>Produk Terjual
                     </h6>
                     <span class="badge badge-soft-grey rounded-pill px-3 py-1 fw-bold fs-7">
                         Top Performers

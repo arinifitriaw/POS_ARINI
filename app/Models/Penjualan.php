@@ -14,11 +14,14 @@ class Penjualan extends Model
     protected $fillable = [
         'user_id',
         'total_pembayaran',
+        'uang_dibayar',
+        'kembalian',
         'ukuran_baju',
         'metode_pembayaran',
         'status'
     ];
-     public function user()
+
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

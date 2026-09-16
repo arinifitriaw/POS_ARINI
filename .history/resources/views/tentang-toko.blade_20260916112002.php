@@ -63,7 +63,7 @@
             </h2>
 
             <p>
-                Tujuan Syntez Official adalah mengembangkan usaha di bidang penjualan baju polo, menyediakan produk yang berkualitas sesuai dengan kebutuhan pelanggan, serta memberikan pelayanan yang baik dan kemudahan dalam proses penjualan. Selain itu, Syntez Official bertujuan untuk meningkatkan kepuasan pelanggan dan mengembangkan jangkauan usahanya.
+                
             </p>
 
         </div>

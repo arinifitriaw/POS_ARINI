@@ -1,3 +1,4 @@
+```php
 <?php
 
 namespace App\Services;
@@ -80,4 +81,4 @@ class LaporanPenjualanService
             ->get();
     }
 }
-
+```

@@ -80,4 +80,4 @@ class LaporanPenjualanService
             ->get();
     }
 }
-
+```

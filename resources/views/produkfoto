@@ -1,3 +1,13 @@
 Karena produk tersebut sudah digunakan dalam transaksi, jadi tidak bisa dihapus agar data transaksi tetap aman
-
 Supaya data transaksi yang sudah tercatat tidak ikut rusak atau hilang ketika produk dihapus
+bahasa pengulangan: for — perulangan dengan jumlah yang biasanya sudah ditentukan.
+                    foreach — untuk mengulang setiap data dalam array atau collection.
+                    while — mengulang selama kondisi bernilai benar.
+                    do...while — menjalankan perintah dulu, baru mengecek kondisi.
+                    for...in — umum di JavaScript untuk mengulang properti/object.
+                    for...of
+bahasa percabangan: if → jika kondisi benar
+                    elseif → jika kondisi sebelumnya salah, cek kondisi lain
+                    else → jika semua kondisi salah
+                    endif → penutup if pada Blade Laravel 
+fungsi function: Untuk menyimpan data produk yang dipilih ke dalam transaksi      

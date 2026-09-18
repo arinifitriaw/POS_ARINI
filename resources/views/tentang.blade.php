@@ -108,6 +108,68 @@
     .tech-list strong {
         color: #1e293b;
     }
+
+    /* =========================
+       KONTAK
+       ========================= */
+    .contact-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 15px;
+        text-decoration: none;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        height: 100%;
+        transition: all 0.2s ease;
+    }
+
+    .contact-card:hover {
+        color: #334155;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(51, 65, 85, 0.10);
+    }
+
+    .contact-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .instagram-icon {
+        background-color: #fce7f3;
+        color: #d62976;
+    }
+
+    .tiktok-icon {
+        background-color: #f1f5f9;
+        color: #000000;
+    }
+
+    .email-icon {
+        background-color: #e0f2fe;
+        color: #0284c7;
+    }
+
+    .contact-label {
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 3px;
+    }
+
+    .contact-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1e293b;
+        word-break: break-word;
+    }
 </style>
 
 <div class="container py-4">
@@ -137,7 +199,7 @@
     </div>
 
     <div class="row g-4">
-        
+
         <!-- Tentang Saya -->
         <div class="col-md-6">
             <div class="info-card p-4 h-100 shadow-sm">
@@ -147,12 +209,13 @@
                     </div>
                     <h5 class="section-title mb-0">Tentang Saya</h5>
                 </div>
+
                 <p class="text-secondary mb-0">
                     Halo, saya <strong>Arini Fitria Wulandari</strong>. Saya adalah pengembang aplikasi yang
-                     memiliki ketertarikan pada dunia pemrograman dan pengembangan
-                      sistem berbasis web. Melalui aplikasi ini, saya mengembangkan
-                       sistem kasir untuk membantu proses pengelolaan toko Syntez Official,
-                        yaitu toko yang menyediakan produk pakaian seperti Baju Polo.
+                    memiliki ketertarikan pada dunia pemrograman dan pengembangan
+                    sistem berbasis web. Melalui aplikasi ini, saya mengembangkan
+                    sistem kasir untuk membantu proses pengelolaan toko Syntez Official,
+                    yaitu toko yang menyediakan produk pakaian seperti Baju Polo.
                 </p>
             </div>
         </div>
@@ -164,45 +227,144 @@
                     <div class="icon-box-slate">
                         <i class="bi bi-shop fs-5"></i>
                     </div>
+
                     <h5 class="section-title mb-0">Tentang Aplikasi</h5>
                 </div>
+
                 <p class="text-secondary mb-0">
                     Aplikasi Syntez Official merupakan sistem kasir atau Point Of Sale (POS)
                     yang dibuat untuk membantu mengelola kegiatan penjualan produk Baju Polo.
                     Aplikasi ini menyediakan fitur untuk mengelola data pengguna, produk, stok,
-                    serta transaksi penjualan. Dengan adanya aplikasi ini, proses pencatatan produk 
+                    serta transaksi penjualan. Dengan adanya aplikasi ini, proses pencatatan produk
                     dan transaksi diharapkan menjadi lebih teratur, mudah, dan efisien.
                 </p>
             </div>
         </div>
 
-        <!-- Teknologi yang Digunakan (Posisi Tengah) -->
+        <!-- Teknologi yang Digunakan -->
         <div class="col-md-8 offset-md-2">
             <div class="info-card p-4 shadow-sm text-center">
                 <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
                     <div class="icon-box-slate">
                         <i class="bi bi-code-slash fs-5"></i>
                     </div>
-                    <h5 class="section-title mb-0">Teknologi yang Digunakan</h5>
+
+                    <h5 class="section-title mb-0">
+                        Teknologi yang Digunakan
+                    </h5>
                 </div>
-                
+
                 <ul class="tech-list mb-0">
                     <li>
                         <strong>Bahasa Pemograman:</strong> PHP, JavaScript
                     </li>
+
                     <li>
                         <strong>Framework:</strong> Laravel
                     </li>
+
                     <li>
                         <strong>Frontend:</strong> HTML, CSS, Bootstrap
                     </li>
+
                     <li>
                         <strong>Database:</strong> MySQL
                     </li>
+
                     <li>
                         <strong>Tools:</strong> Visual Studio Code, Git
                     </li>
                 </ul>
+            </div>
+        </div>
+
+        <!-- Kontak & Media Sosial -->
+        <div class="col-md-10 offset-md-1">
+            <div class="info-card p-4 shadow-sm">
+
+                <div class="d-flex align-items-center justify-content-center gap-3 mb-4">
+                    <div class="icon-box-slate">
+                        <i class="bi bi-person-lines-fill fs-5"></i>
+                    </div>
+
+                    <h5 class="section-title mb-0">
+                        Kontak & Media Sosial
+                    </h5>
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- Instagram -->
+                    <div class="col-md-4">
+                        <a href="https://www.instagram.com/pretys.ainn"
+                           target="_blank"
+                           class="contact-card">
+
+                            <div class="contact-icon instagram-icon">
+                                <i class="fa-brands fa-instagram"></i>
+                            </div>
+
+                            <div>
+                                <div class="contact-label">
+                                    Instagram
+                                </div>
+
+                                <div class="contact-value">
+                                    @pretys.ainn
+                                </div>
+                            </div>
+
+                        </a>
+                    </div>
+
+                    <!-- TikTok -->
+                    <div class="col-md-4">
+                        <a href="https://www.tiktok.com/@ainntwo"
+                           target="_blank"
+                           class="contact-card">
+
+                            <div class="contact-icon tiktok-icon">
+                                <i class="fa-brands fa-tiktok"></i>
+                            </div>
+
+                            <div>
+                                <div class="contact-label">
+                                    TikTok
+                                </div>
+
+                                <div class="contact-value">
+                                    @ainntwo
+                                </div>
+                            </div>
+
+                        </a>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-4">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=arinifitriaw@gmail.com"
+                            target="_blank"
+                            class="contact-card">
+
+                            <div class="contact-icon email-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+
+                            <div>
+                                <div class="contact-label">
+                                    Email
+                                </div>
+
+                                <div class="contact-value">
+                                    arinifitriaw@gmail.com
+                                </div>
+                            </div>
+
+                        </a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 

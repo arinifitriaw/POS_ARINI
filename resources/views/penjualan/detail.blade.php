@@ -7,9 +7,11 @@
 @include('layouts.navbar')
 
 <!-- FontAwesome untuk Icon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
+
     body {
         background-color: #f1f5f9;
         color: #334155;
@@ -151,6 +153,8 @@
             color: #000 !important;
         }
 
+        /* Sembunyikan elemen yang tidak perlu dicetak */
+
         .no-print,
         nav,
         .navbar,
@@ -158,12 +162,16 @@
             display: none !important;
         }
 
+        /* Container print */
+
         .container {
             width: 100% !important;
             max-width: 100% !important;
             padding: 0 !important;
             margin: 0 !important;
         }
+
+        /* Header */
 
         .hero-banner-sales {
             background: #334155 !important;
@@ -186,10 +194,37 @@
             print-color-adjust: exact;
         }
 
+        /* =====================================================
+           PENTING:
+           Jangan menggunakan break-inside: avoid pada .row
+           karena bisa membuat isi transaksi terdorong
+           ke halaman berikutnya.
+        ====================================================== */
+
+        .row {
+            display: block !important;
+            break-inside: auto !important;
+            page-break-inside: auto !important;
+        }
+
+        /* Saat print, informasi transaksi dan produk
+           dibuat satu kolom */
+
+        .col-lg-4,
+        .col-lg-8 {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: block !important;
+        }
+
+        /* Card */
+
         .card {
             box-shadow: none !important;
             border: 1px solid #cbd5e1 !important;
-            break-inside: avoid;
+            break-inside: auto !important;
+            page-break-inside: auto !important;
+            margin-bottom: 20px !important;
         }
 
         .card-header {
@@ -197,6 +232,8 @@
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
+
+        /* Table */
 
         .table {
             width: 100% !important;
@@ -207,41 +244,71 @@
             border-color: #cbd5e1 !important;
         }
 
+        /* Badge */
+
         .badge {
             border: 1px solid #cbd5e1 !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
+        /* Foto produk */
+
         img {
             max-width: 55px !important;
             max-height: 55px !important;
         }
 
-        .row,
-        .card {
-            break-inside: avoid;
-        }
+        /* QRIS */
 
-        /* QRIS saat print */
         .qris-image {
             max-width: 220px !important;
             max-height: 220px !important;
         }
 
         /* Modal jangan ikut print */
+
         .modal,
         .modal-backdrop {
             display: none !important;
         }
     }
+
 </style>
 
+
 <div class="container py-4">
+
+    @php
+
+        /*
+        =========================================================
+        PERHITUNGAN TOTAL BELANJA & DISKON
+        =========================================================
+
+        Jika total belanja >= Rp1.000.000
+        maka mendapatkan diskon 10%.
+
+        Tidak menggunakan kolom database baru.
+        */
+
+        $totalBelanja = $sale->itemPenjualan->sum('subtotal');
+
+        $diskon = 0;
+
+        if ($totalBelanja >= 1000000) {
+            $diskon = (int) round($totalBelanja * 10 / 100);
+        }
+
+        $totalSetelahDiskon = $totalBelanja - $diskon;
+
+    @endphp
+
 
     <!-- =========================
          1. BANNER HEADER
     ========================== -->
+
     <div class="hero-banner-sales mb-4">
 
         <div class="row align-items-center">
@@ -251,10 +318,13 @@
                 <div class="d-flex align-items-center gap-3">
 
                     <div class="icon-box-banner">
+
                         <i class="fa-solid fa-receipt fa-2x text-white"></i>
+
                     </div>
 
                     <div>
+
                         <h2 class="fw-bold mb-1">
                             Penjualan Detail
                         </h2>
@@ -262,30 +332,38 @@
                         <p class="mb-0 text-white-50">
                             Rincian lengkap item & informasi transaksi penjualan
                         </p>
+
                     </div>
 
                 </div>
 
             </div>
 
+
             <!-- Tombol -->
+
             <div class="col-md-4 text-md-end mt-3 mt-md-0">
 
                 <!-- Tombol Print -->
+
                 <button type="button"
                         onclick="window.print()"
                         class="btn btn-light rounded-pill px-4 py-2 fw-bold shadow-sm me-2 no-print">
 
                     <i class="fa-solid fa-print me-2"></i>
+
                     Print
 
                 </button>
 
+
                 <!-- Tombol Kembali -->
+
                 <a href="{{ route('penjualan.index') }}"
                    class="btn btn-gradient-light rounded-pill px-4 py-2 fw-bold shadow-sm no-print">
 
                     <i class="fa-solid fa-arrow-left me-2"></i>
+
                     Kembali
 
                 </a>
@@ -297,14 +375,18 @@
     </div>
 
 
+
     <!-- =========================
          2. ROW CONTENT
     ========================== -->
+
     <div class="row g-4 mb-4">
+
 
         <!-- =========================
              2A. INFORMASI TRANSAKSI
         ========================== -->
+
         <div class="col-lg-4">
 
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100"
@@ -325,7 +407,9 @@
 
                 <div class="card-body p-4">
 
+
                     <!-- Kasir -->
+
                     <div class="mb-3 pb-3 border-bottom">
 
                         <span class="info-label d-block mb-1">
@@ -347,7 +431,9 @@
                     </div>
 
 
+
                     <!-- Tanggal Transaksi -->
+
                     <div class="mb-3 pb-3 border-bottom">
 
                         <span class="info-label d-block mb-1">
@@ -367,10 +453,14 @@
                     </div>
 
 
+
                     <!-- Metode Pembayaran & Status -->
+
                     <div class="mb-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
 
+
                         <!-- Metode Pembayaran -->
+
                         <div>
 
                             <span class="info-label d-block mb-1">
@@ -412,7 +502,9 @@
                         </div>
 
 
+
                         <!-- Status -->
+
                         <div class="text-end">
 
                             <span class="info-label d-block mb-1">
@@ -446,31 +538,122 @@
                     </div>
 
 
-                    <!-- Total Pembayaran -->
+
+                    <!-- =========================
+                         TOTAL BELANJA
+                    ========================== -->
+
                     <div class="mb-3 pb-3 border-bottom">
 
                         <span class="info-label d-block mb-1">
-                            Total Pembayaran
+
+                            Total Belanja
+
                         </span>
 
-                        <span class="fs-3 fw-bold text-success">
+                        <span class="fs-5 fw-bold text-dark">
 
-                            Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
+                            Rp {{ number_format($totalBelanja, 0, ',', '.') }}
 
                         </span>
 
                     </div>
 
 
+
+                    <!-- =========================
+                         DISKON
+                    ========================== -->
+
+                    <div class="mb-3 pb-3 border-bottom">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+
+                                <span class="info-label d-block mb-1">
+
+                                    Diskon
+
+                                </span>
+
+                                @if($diskon > 0)
+
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-1 fw-bold">
+
+                                        <i class="fa-solid fa-tag me-1"></i>
+
+                                        DISKON 10%
+
+                                    </span>
+
+                                @else
+
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-1 fw-bold">
+
+                                        Tidak Ada Diskon
+
+                                    </span>
+
+                                @endif
+
+                            </div>
+
+
+                            <span class="fs-5 fw-bold {{ $diskon > 0 ? 'text-danger' : 'text-muted' }}">
+
+                                @if($diskon > 0)
+
+                                    - Rp {{ number_format($diskon, 0, ',', '.') }}
+
+                                @else
+
+                                    Rp 0
+
+                                @endif
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         TOTAL PEMBAYARAN
+                    ========================== -->
+
+                    <div class="mb-3 pb-3 border-bottom">
+
+                        <span class="info-label d-block mb-1">
+
+                            Total Pembayaran
+
+                        </span>
+
+                        <span class="fs-3 fw-bold text-success">
+
+                            Rp {{ number_format($totalSetelahDiskon, 0, ',', '.') }}
+
+                        </span>
+
+                    </div>
+
+
+
                     <!-- =========================
                          PEMBAYARAN CASH
                     ========================== -->
+
                     @if($sale->metode_pembayaran === 'CASH')
 
                         <div class="mb-3 pb-3 border-bottom">
 
                             <span class="info-label d-block mb-1">
+
                                 Uang Dibayar
+
                             </span>
 
                             <span class="fs-5 fw-bold text-dark">
@@ -485,7 +668,9 @@
                         <div class="mb-3 pb-3 border-bottom">
 
                             <span class="info-label d-block mb-1">
+
                                 Kembalian
+
                             </span>
 
                             <span class="fs-4 fw-bold text-success">
@@ -499,16 +684,21 @@
                     @endif
 
 
+
                     <!-- =========================
                          QRIS PEMBAYARAN
                     ========================== -->
+
                     @if($sale->metode_pembayaran === 'QRIS')
 
                         <div class="mt-4 pt-4 border-top text-center">
 
                             <span class="info-label d-block mb-3">
+
                                 QRIS PEMBAYARAN
+
                             </span>
+
 
                             <div class="d-inline-block p-3 bg-white rounded-4 border shadow-sm">
 
@@ -519,19 +709,26 @@
 
                             </div>
 
+
                             <p class="mt-3 mb-1 fw-bold text-dark">
+
                                 Scan QRIS Untuk Melakukan Pembayaran
+
                             </p>
 
+
                             <p class="text-muted small mb-0">
-                                Total: Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
+
+                                Total:
+                                Rp {{ number_format($totalSetelahDiskon, 0, ',', '.') }}
+
                             </p>
 
 
                             <!-- Tombol Konfirmasi Pembayaran QRIS -->
+
                             @if($sale->status !== 'COMPLETED')
 
-                                <!-- Tombol membuka modal -->
                                 <button type="button"
                                         class="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm mt-4 no-print"
                                         data-bs-toggle="modal"
@@ -570,15 +767,19 @@
         </div>
 
 
+
         <!-- =========================
              2B. DAFTAR PRODUK
         ========================== -->
+
         <div class="col-lg-8">
 
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100"
                  style="border: 1px solid #e2e8f0 !important;">
 
+
                 <!-- Header -->
+
                 <div class="card-header card-header-slate d-flex justify-content-between align-items-center">
 
                     <h5 class="fw-bold mb-0 fs-6">
@@ -588,6 +789,7 @@
                         Daftar Produk Dibeli
 
                     </h5>
+
 
                     <span class="badge bg-white text-dark border rounded-pill px-3 py-1 fw-bold"
                           style="font-size: 0.75rem;">
@@ -599,14 +801,18 @@
                 </div>
 
 
+
                 <!-- Body -->
+
                 <div class="card-body p-0">
 
                     <div class="table-responsive">
 
                         <table class="table table-hover align-middle mb-0">
 
+
                             <!-- Table Header -->
+
                             <thead class="text-uppercase fs-7"
                                    style="background-color: #f8fafc; color: #64748b;">
 
@@ -641,7 +847,9 @@
                             </thead>
 
 
+
                             <!-- Table Body -->
+
                             <tbody>
 
                                 <?php $i = 1; ?>
@@ -651,7 +859,9 @@
                                     <tr class="border-bottom"
                                         style="border-color: #f1f5f9 !important;">
 
+
                                         <!-- Nomor -->
+
                                         <td class="ps-4 fw-bold text-muted">
 
                                             {{ $i++ }}
@@ -659,7 +869,9 @@
                                         </td>
 
 
+
                                         <!-- Foto Produk -->
+
                                         <td>
 
                                             @if($item->produk && $item->produk->foto)
@@ -669,7 +881,7 @@
                                                      width="55"
                                                      height="55"
                                                      class="rounded-3 shadow-sm"
-                                                     style="object-fit:cover; border: 1px solid #e2e8f0;">
+                                                     style="object-fit: cover; border: 1px solid #e2e8f0;">
 
                                             @else
 
@@ -685,7 +897,9 @@
                                         </td>
 
 
+
                                         <!-- Nama Produk -->
+
                                         <td class="fw-bold text-dark">
 
                                             {{ $item->produk->nama ?? 'Produk Dihapus' }}
@@ -693,7 +907,9 @@
                                         </td>
 
 
+
                                         <!-- Ukuran -->
+
                                         <td class="text-center">
 
                                             <span class="badge bg-secondary text-white px-3 py-1 rounded-pill fw-bold">
@@ -705,7 +921,9 @@
                                         </td>
 
 
+
                                         <!-- Quantity -->
+
                                         <td class="text-center">
 
                                             <span class="badge bg-light text-dark border px-3 py-1 fw-bold rounded-pill">
@@ -717,7 +935,9 @@
                                         </td>
 
 
+
                                         <!-- Harga Satuan -->
+
                                         <td class="pe-4 text-end fw-bold text-success">
 
                                             Rp {{ number_format(
@@ -771,9 +991,11 @@
 </div>
 
 
+
 <!-- =====================================================
      MODAL KONFIRMASI PEMBAYARAN QRIS
 ====================================================== -->
+
 @if($sale->metode_pembayaran === 'QRIS' && $sale->status !== 'COMPLETED')
 
 <div class="modal fade"
@@ -786,7 +1008,9 @@
 
         <div class="modal-content modal-qris-content">
 
+
             <!-- Header Modal -->
+
             <div class="modal-header modal-qris-header">
 
                 <div class="d-flex align-items-center">
@@ -816,16 +1040,20 @@
 
                 </div>
 
+
                 <button type="button"
                         class="btn-close btn-close-white"
                         data-bs-dismiss="modal"
                         aria-label="Close">
+
                 </button>
 
             </div>
 
 
+
             <!-- Body Modal -->
+
             <div class="modal-body modal-qris-body text-center">
 
                 <h4 class="fw-bold text-dark mb-2">
@@ -854,10 +1082,14 @@
             </div>
 
 
+
             <!-- Footer Modal -->
+
             <div class="modal-footer modal-qris-footer d-flex">
 
+
                 <!-- Tombol Batal -->
+
                 <button type="button"
                         class="btn btn-modal-cancel flex-fill"
                         data-bs-dismiss="modal">
@@ -869,7 +1101,9 @@
                 </button>
 
 
+
                 <!-- Form Konfirmasi -->
+
                 <form action="{{ route('penjualan.konfirmasi', $sale->id) }}"
                       method="POST"
                       class="flex-fill">

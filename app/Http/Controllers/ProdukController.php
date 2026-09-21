@@ -9,6 +9,7 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ProdukController extends Controller
 {
@@ -19,20 +20,67 @@ class ProdukController extends Controller
     {
         $this->authorize('viewAny', Produk::class);
 
-        
-
         $keyword = $request->input('search');
 
-        if($keyword) {
+        if ($keyword) {
+
             $products = Produk::when($keyword, function ($query) use ($keyword) {
+
                 $query->where('nama', 'like', '%' . $keyword . '%');
+
             })
             ->orderBy('nama')
             ->paginate(10)
             ->withQueryString();
+
         } else {
-            $products = Produk::latest()->paginate(10)->withQueryString();
+
+            $products = Produk::latest()
+                ->paginate(10)
+                ->withQueryString();
+
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Cari Produk Bestseller
+        |--------------------------------------------------------------------------
+        | Produk dengan jumlah kuantitas terjual paling banyak
+        | dari transaksi yang sudah COMPLETED.
+        */
+
+        $bestseller = DB::table('item_penjualan')
+            ->join(
+                'penjualan',
+                'penjualan.id',
+                '=',
+                'item_penjualan.penjualan_id'
+            )
+            ->where('penjualan.status', 'COMPLETED')
+            ->select(
+                'item_penjualan.produk_id',
+                DB::raw('SUM(item_penjualan.kuantitas) as total_terjual')
+            )
+            ->groupBy('item_penjualan.produk_id')
+            ->orderByDesc('total_terjual')
+            ->first();
+
+        $bestsellerId = $bestseller?->produk_id;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tandai Produk Bestseller
+        |--------------------------------------------------------------------------
+        */
+
+        $products->getCollection()->transform(function ($product) use ($bestsellerId) {
+
+            $product->is_bestseller = $product->id == $bestsellerId;
+
+            return $product;
+
+        });
+
         return view('produk.index', compact('products'));
     }
 
@@ -67,7 +115,9 @@ class ProdukController extends Controller
 
         Produk::create($data);
 
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()
+            ->route('produk.index')
+            ->with('success', 'Produk berhasil ditambahkan.');
     }
 
     /**
@@ -77,7 +127,7 @@ class ProdukController extends Controller
     {
         $this->authorize('view', $produk);
 
-        return view('produk.detail' , compact('produk'));
+        return view('produk.detail', compact('produk'));
     }
 
     /**
@@ -98,57 +148,66 @@ class ProdukController extends Controller
         $dataReq = $request->validated();
 
         $data = [
-        'user_id'       => Auth::id(),
-        'nama'          => $dataReq['name'],
-        'harga_beli'    => $dataReq['purchase_price'],
-        'harga_jual'    => $dataReq['selling_price'],
-        'stok'          => $dataReq['stock'],
+            'user_id' => Auth::id(),
+            'nama' => $dataReq['name'],
+            'harga_beli' => $dataReq['purchase_price'],
+            'harga_jual' => $dataReq['selling_price'],
+            'stok' => $dataReq['stock'],
         ];
 
-    //Jika upload foto baru
-    if ($request->hasFile('foto')) {
+        // Jika upload foto baru
+        if ($request->hasFile('foto')) {
 
-        //Hapus foto lama (jika ada & memang tersimpan)
-        if (
-            $produk->foto &&
-            Storage::disk('public')->exists($produk->foto)
-        ) {
-            Storage::disk('public')->delete($produk->foto);
+            // Hapus foto lama jika ada
+            if (
+                $produk->foto &&
+                Storage::disk('public')->exists($produk->foto)
+            ) {
+                Storage::disk('public')->delete($produk->foto);
+            }
+
+            // Simpan foto baru
+            $data['foto'] = $request->file('foto')->store('products', 'public');
         }
-        //Simpan foto baru
-        $data['foto'] = $request->file('foto')->store('products', 'public');
-    }
 
         $produk->update($data);
 
-        return redirect()->route('produk.edit', $produk->id)->with('success', 'Produk berhasil diperbarui.');
+        return redirect()
+            ->route('produk.edit', $produk->id)
+            ->with('success', 'Produk berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Produk $produk)
-{
-    $this->authorize('delete', $produk);
+    {
+        $this->authorize('delete', $produk);
 
-    // Cek apakah produk masih digunakan pada transaksi
-    if ($produk->itemPenjualan()->exists()) {
+        // Cek apakah produk masih digunakan pada transaksi
+        if ($produk->itemPenjualan()->exists()) {
+
+            return redirect()
+                ->route('produk.index')
+                ->with(
+                    'error',
+                    'Produk tidak dapat dihapus karena sudah digunakan dalam transaksi.'
+                );
+        }
+
+        // Hapus foto jika ada
+        if (
+            $produk->foto &&
+            Storage::disk('public')->exists($produk->foto)
+        ) {
+            Storage::disk('public')->delete($produk->foto);
+        }
+
+        // Hapus produk
+        $produk->delete();
+
         return redirect()
             ->route('produk.index')
-            ->with('error', 'Produk tidak dapat dihapus karena sudah digunakan dalam transaksi.');
+            ->with('success', 'Produk berhasil dihapus.');
     }
-
-    // Hapus foto jika ada
-    if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
-        Storage::disk('public')->delete($produk->foto);
-    }
-
-    // Hapus produk
-    $produk->delete();
-
-    return redirect()
-        ->route('produk.index')
-        ->with('success', 'Produk berhasil dihapus.');
-    }
-
 }

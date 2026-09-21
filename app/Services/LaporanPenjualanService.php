@@ -79,5 +79,46 @@ class LaporanPenjualanService
             ->limit($limit)
             ->get();
     }
-}
 
+    /*
+    |--------------------------------------------------------------------------
+    | Produk Bestseller
+    |--------------------------------------------------------------------------
+    */
+
+    public function produkBestseller(int $limit = 5)
+    {
+        return DB::table('item_penjualan')
+            ->join(
+                'penjualan',
+                'penjualan.id',
+                '=',
+                'item_penjualan.penjualan_id'
+            )
+            ->join(
+                'produk',
+                'produk.id',
+                '=',
+                'item_penjualan.produk_id'
+            )
+            ->where(
+                'penjualan.status',
+                'COMPLETED'
+            )
+            ->select(
+                'produk.nama',
+                'produk.stok',
+                DB::raw(
+                    'SUM(item_penjualan.kuantitas) as total_terjual'
+                )
+            )
+            ->groupBy(
+                'produk.id',
+                'produk.nama',
+                'produk.stok'
+            )
+            ->orderByDesc('total_terjual')
+            ->limit($limit)
+            ->get();
+    }
+}

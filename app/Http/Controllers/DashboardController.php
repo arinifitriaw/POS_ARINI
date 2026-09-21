@@ -21,11 +21,14 @@ class DashboardController extends Controller
         return view('dashboard', [
             'tanggalHariIni' => Carbon::now(),
             'ringkasan' => $ringkasan,
+
             'produkTerlaris' => $this->laporanService->produkTerlarisHariIni(),
+
+            // Produk Bestseller
+            'produkBestseller' => $this->laporanService->produkBestseller(),
+
             'produkStokRendah' => $this->stokService->produkStokRendah(),
             'produkStokHabis' => $this->stokService->produkStokHabis(),
         ]);
     }
 }
-
- 

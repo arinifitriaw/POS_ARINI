@@ -7,7 +7,8 @@
 @include('layouts.navbar')
 
 <!-- CDN FontAwesome untuk Icon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     body {
@@ -126,11 +127,22 @@
         object-fit: contain;
     }
 
+    /* Alert Stok */
+    .stock-warning-alert {
+        background: #fff7ed;
+        border: 1px solid #fed7aa !important;
+        color: #9a3412;
+    }
+
+    /* Input Quantity ketika stok melebihi */
+    .quantity-warning {
+        border-color: #f97316 !important;
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12) !important;
+    }
 
     /* =========================================================
        MODAL KONFIRMASI
        ========================================================= */
-
     .delete-modal {
         position: fixed;
         inset: 0;
@@ -288,7 +300,6 @@
     }
 
     @media (max-width: 576px) {
-
         .delete-modal {
             padding: 12px;
         }
@@ -316,27 +327,23 @@
     }
 </style>
 
-
 <div class="container py-4">
 
-    <!-- Alert Error Handling -->
-
+    {{-- =========================================================
+         ALERT ERROR VALIDASI
+         ========================================================= --}}
     @if($errors->any())
-
-        <div class="alert alert-danger border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
+        <div class="alert alert-danger border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show"
+             role="alert">
 
             <i class="fa-solid fa-circle-exclamation me-2"></i>
 
             <strong>Checkout gagal!</strong>
 
             <ul class="mb-0 mt-2">
-
                 @foreach($errors->all() as $error)
-
                     <li>{{ $error }}</li>
-
                 @endforeach
-
             </ul>
 
             <button type="button"
@@ -344,54 +351,72 @@
                     data-bs-dismiss="alert"
                     aria-label="Close">
             </button>
-
         </div>
-
     @endif
 
-
+    {{-- =========================================================
+         ALERT STOK DARI BACKEND
+         ========================================================= --}}
     @if(session('error'))
+        <div class="alert stock-warning-alert border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show"
+             role="alert">
 
-        <div class="alert alert-danger border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
+            <div class="d-flex align-items-start">
 
-            <i class="fa-solid fa-circle-exclamation me-2"></i>
+                <i class="fa-solid fa-triangle-exclamation fs-5 me-3 mt-1"></i>
 
-            {{ session('error') }}
+                <div>
+                    <strong class="d-block mb-1">
+                        Stok Tidak Mencukupi
+                    </strong>
 
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close">
-            </button>
+                    <span>
+                        {{ session('error') }}
+                    </span>
+                </div>
 
-        </div>
-
-    @endif
-
-
-    @if(session('success'))
-
-        <div class="alert alert-success border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
-
-            <i class="fa-solid fa-circle-check me-2"></i>
-
-            {{ session('success') }}
+            </div>
 
             <button type="button"
                     class="btn-close"
                     data-bs-dismiss="alert"
                     aria-label="Close">
             </button>
+        </div>
+    @endif
+
+    {{-- =========================================================
+         ALERT STOK DARI JAVASCRIPT
+         ========================================================= --}}
+    <div id="stockWarningAlert"
+         class="alert stock-warning-alert border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show"
+         role="alert"
+         style="display: none;">
+
+        <div class="d-flex align-items-start">
+
+            <i class="fa-solid fa-triangle-exclamation fs-5 me-3 mt-1"></i>
+
+            <div>
+                <strong class="d-block mb-1">
+                    Stok Tidak Mencukupi
+                </strong>
+
+                <span id="stockWarningMessage"></span>
+            </div>
 
         </div>
 
-    @endif
+        <button type="button"
+                class="btn-close"
+                onclick="closeStockWarning()"
+                aria-label="Close">
+        </button>
+    </div>
 
-
-    <!-- =========================================================
+    {{-- =========================================================
          HERO HEADER
-         ========================================================= -->
-
+         ========================================================= --}}
     <div class="hero-banner-sales mb-4">
 
         <div class="row align-items-center">
@@ -401,13 +426,10 @@
                 <div class="d-flex align-items-center gap-3">
 
                     <div class="icon-box-banner">
-
                         <i class="fa-solid fa-cash-register fa-2x text-white"></i>
-
                     </div>
 
                     <div>
-
                         <h2 class="fw-bold mb-1">
                             Tambah & Lanjutkan Penjualan
                         </h2>
@@ -415,13 +437,11 @@
                         <p class="mb-0 text-white-50">
                             Kelola item keranjang dan selesaikan transaksi kasir POS
                         </p>
-
                     </div>
 
                 </div>
 
             </div>
-
 
             <div class="col-md-5 text-md-end mt-3 mt-md-0">
 
@@ -439,16 +459,27 @@
 
     </div>
 
+    {{-- =========================================================
+         HITUNG TOTAL & DISKON
+         ========================================================= --}}
+    @php
+        $totalBelanja = $sale->ItemPenjualan->sum('subtotal');
 
-    <!-- =========================================================
+        $diskon = 0;
+
+        if ($totalBelanja >= 1000000) {
+            $diskon = $totalBelanja * 10 / 100;
+        }
+
+        $totalSetelahDiskon = $totalBelanja - $diskon;
+    @endphp
+
+    {{-- =========================================================
          MAIN CONTENT
-         ========================================================= -->
-
+         ========================================================= --}}
     <div class="row g-4">
 
-
         {{-- =================== KATALOG PRODUK =================== --}}
-
         <div class="col-lg-6">
 
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100"
@@ -459,6 +490,7 @@
                     <h5 class="fw-bold mb-0 fs-6">
 
                         <i class="fa-solid fa-boxes-stacked text-slate-500 me-2"></i>
+
                         Katalog Produk
 
                     </h5>
@@ -472,11 +504,9 @@
 
                 </div>
 
-
                 <div class="card-body p-3">
 
-                    <!-- Form Pencarian Produk -->
-
+                    {{-- Form Pencarian Produk --}}
                     <div class="mb-3">
 
                         <form method="GET"
@@ -503,9 +533,7 @@
 
                     </div>
 
-
-                    <!-- Scrollable Product List -->
-
+                    {{-- Scrollable Product List --}}
                     <div class="product-list-container d-flex flex-column gap-2">
 
                         @forelse($products as $product)
@@ -521,9 +549,7 @@
                                        name="product_id"
                                        value="{{ $product->id }}">
 
-
                                 {{-- Informasi Produk --}}
-
                                 <div class="col-7">
 
                                     <div class="d-flex align-items-center gap-2">
@@ -546,19 +572,18 @@
 
                                         @endif
 
-
                                         <div class="text-truncate">
 
                                             <div class="fw-bold text-dark text-truncate">
-
                                                 {{ $product->nama }}
-
                                             </div>
 
                                             <small class="text-success fw-bold">
-
                                                 Rp {{ number_format($product->harga_jual, 0, ',', '.') }}
+                                            </small>
 
+                                            <small class="d-block text-muted">
+                                                Stok: {{ $product->stok }}
                                             </small>
 
                                         </div>
@@ -567,26 +592,26 @@
 
                                 </div>
 
-
                                 {{-- Input Quantity --}}
-
                                 <div class="col-3">
 
                                     <input type="number"
                                            name="quantity"
                                            value="1"
                                            min="1"
-                                           class="form-control text-center rounded-3 shadow-none fw-semibold border-secondary-subtle {{ $sale->status === 'COMPLETED' ? 'readonly' : '' }}">
+                                           data-stock="{{ $product->stok }}"
+                                           class="form-control text-center rounded-3 shadow-none fw-semibold border-secondary-subtle product-quantity"
+                                           {{ $product->stok <= 0 || $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
 
                                 </div>
 
-
                                 {{-- Tombol Tambah --}}
-
                                 <div class="col-2">
 
-                                    <button class="btn btn-slate-primary w-100 rounded-3 py-2 fw-bold shadow-sm {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}"
-                                            title="Tambah Ke Keranjang">
+                                    <button type="submit"
+                                            class="btn btn-slate-primary w-100 rounded-3 py-2 fw-bold shadow-sm"
+                                            title="{{ $product->stok <= 0 ? 'Stok Habis' : 'Tambah Ke Keranjang' }}"
+                                            {{ $product->stok <= 0 || $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
 
                                         <i class="fa-solid fa-plus"></i>
 
@@ -618,9 +643,7 @@
 
         </div>
 
-
         {{-- =================== KERANJANG PENJUALAN =================== --}}
-
         <div class="col-lg-6">
 
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 d-flex flex-column justify-content-between"
@@ -633,6 +656,7 @@
                         <h5 class="fw-bold mb-0 fs-6">
 
                             <i class="fa-solid fa-cart-shopping text-slate-500 me-2"></i>
+
                             Keranjang
 
                         </h5>
@@ -645,7 +669,6 @@
                         </span>
 
                     </div>
-
 
                     <div class="table-responsive">
 
@@ -680,7 +703,6 @@
 
                             </thead>
 
-
                             <tbody>
 
                                 @forelse($sale->ItemPenjualan as $item)
@@ -689,18 +711,12 @@
                                         style="border-color:#f1f5f9 !important;">
 
                                         <td class="ps-3 fw-bold text-dark">
-
                                             {{ $item->produk->nama }}
-
                                         </td>
-
 
                                         <td class="text-muted small">
-
                                             Rp {{ number_format($item->produk->harga_jual, 0, ',', '.') }}
-
                                         </td>
-
 
                                         <td>
 
@@ -713,21 +729,20 @@
                                                 <input type="number"
                                                        name="quantity"
                                                        value="{{ $item->kuantitas }}"
-                                                       class="form-control form-control-sm text-center rounded-3 shadow-none fw-bold"
-                                                       onchange="this.form.submit()"
+                                                       min="1"
+                                                       data-cart-quantity="{{ $item->kuantitas }}"
+                                                       data-cart-stock="{{ $item->produk->stok }}"
+                                                       class="form-control form-control-sm text-center rounded-3 shadow-none fw-bold cart-quantity"
+                                                       onchange="validateCartQuantity(this)"
                                                        {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
 
                                             </form>
 
                                         </td>
 
-
                                         <td class="fw-bold text-success">
-
                                             Rp {{ number_format($item->subtotal, 0, ',', '.') }}
-
                                         </td>
-
 
                                         <td class="text-center">
 
@@ -786,34 +801,78 @@
 
                 </div>
 
-
-                <!-- =========================================================
+                {{-- =========================================================
                      FOOTER PEMBAYARAN
-                     ========================================================= -->
-
+                     ========================================================= --}}
                 <div class="card-footer bg-white p-3 border-top"
                      style="border-color:#e2e8f0 !important;">
 
+                    {{-- =====================================================
+                         TOTAL BELANJA & DISKON
+                         ===================================================== --}}
 
-                    <!-- Total Pembayaran -->
+                    <div class="total-price-box p-3 mb-3">
 
-                    <div class="total-price-box p-3 mb-3 d-flex justify-content-between align-items-center">
+                        {{-- Total Belanja --}}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
 
-                        <span class="fw-bold text-dark mb-0">
-                            Total Pembayaran
-                        </span>
+                            <span class="fw-bold text-dark">
+                                Total Belanja
+                            </span>
 
-                        <h3 class="fw-bold text-success mb-0">
+                            <span class="fw-semibold text-dark">
+                                Rp {{ number_format($totalBelanja, 0, ',', '.') }}
+                            </span>
 
-                            Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
+                        </div>
 
-                        </h3>
+                        {{-- Diskon --}}
+                        @if($diskon > 0)
+
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                <span class="fw-bold text-danger">
+                                    Diskon 10%
+                                </span>
+
+                                <span class="fw-bold text-danger">
+                                    - Rp {{ number_format($diskon, 0, ',', '.') }}
+                                </span>
+
+                            </div>
+
+                        @else
+
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                <span class="text-muted small">
+                                    Diskon
+                                </span>
+
+                                <span class="text-muted small">
+                                    Belanja minimal Rp1.000.000
+                                </span>
+
+                            </div>
+
+                        @endif
+
+                        {{-- Total Setelah Diskon --}}
+                        <div class="border-top pt-2 d-flex justify-content-between align-items-center">
+
+                            <span class="fw-bold text-dark">
+                                Total Pembayaran
+                            </span>
+
+                            <h3 class="fw-bold text-success mb-0">
+                                Rp {{ number_format($totalSetelahDiskon, 0, ',', '.') }}
+                            </h3>
+
+                        </div>
 
                     </div>
 
-
-                    <!-- Form Checkout -->
-
+                    {{-- Form Checkout --}}
                     <form method="POST"
                           action="{{ route('penjualan.update', $sale->id) }}"
                           id="checkoutForm">
@@ -821,9 +880,7 @@
                         @csrf
                         @method('PUT')
 
-
-                        <!-- Ukuran Baju -->
-
+                        {{-- Ukuran Baju --}}
                         <div class="mb-3">
 
                             <label class="form-label fw-bold text-secondary fs-7 text-uppercase mb-1">
@@ -869,9 +926,7 @@
 
                         </div>
 
-
-                        <!-- Metode Pembayaran -->
-
+                        {{-- Metode Pembayaran --}}
                         <div class="mb-3">
 
                             <label class="form-label fw-bold text-secondary fs-7 text-uppercase mb-1">
@@ -885,17 +940,17 @@
                                     {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}>
 
                                 <option value=""
-                                {{ empty($sale->metode_pembayaran) ? 'selected' : '' }}>
+                                    {{ empty($sale->metode_pembayaran) ? 'selected' : '' }}>
                                     -- Pilih Pembayaran --
                                 </option>
 
                                 <option value="CASH"
-                                {{ $sale->metode_pembayaran === 'CASH' ? 'selected' : '' }}>
+                                    {{ $sale->metode_pembayaran === 'CASH' ? 'selected' : '' }}>
                                     CASH
                                 </option>
 
                                 <option value="QRIS"
-                                {{ $sale->metode_pembayaran === 'QRIS' ? 'selected' : '' }}>
+                                    {{ $sale->metode_pembayaran === 'QRIS' ? 'selected' : '' }}>
                                     QRIS
                                 </option>
 
@@ -903,11 +958,9 @@
 
                         </div>
 
-
-                        <!-- =========================================================
+                        {{-- =====================================================
                              PEMBAYARAN CASH
-                             ========================================================= -->
-
+                             ===================================================== --}}
                         <div id="cashPayment"
                              class="total-price-box p-3 mb-3"
                              style="display: none;">
@@ -928,7 +981,6 @@
 
                             </div>
 
-
                             <div>
 
                                 <label class="form-label fw-bold text-secondary fs-7 text-uppercase mb-1">
@@ -946,11 +998,9 @@
 
                         </div>
 
-
-                        <!-- =========================================================
+                        {{-- =====================================================
                              QRIS PEMBAYARAN
-                             ========================================================= -->
-
+                             ===================================================== --}}
                         <div id="qrisPayment"
                              class="qris-payment-box text-center p-3 mb-3"
                              style="display: none;">
@@ -963,7 +1013,6 @@
 
                             </div>
 
-
                             <div class="d-inline-block bg-white p-2 rounded-4 border shadow-sm">
 
                                 <img src="{{ asset('storage/images/qris.jpeg') }}"
@@ -972,23 +1021,17 @@
 
                             </div>
 
-
                             <p class="mt-2 mb-1 fw-bold text-dark">
                                 Scan QRIS Untuk Melakukan Pembayaran
                             </p>
 
-
                             <small class="text-muted">
-
-                                Total: Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
-
+                                Total: Rp {{ number_format($totalSetelahDiskon, 0, ',', '.') }}
                             </small>
 
                         </div>
 
-
-                        <!-- Tombol Checkout -->
-
+                        {{-- Tombol Checkout --}}
                         <button type="button"
                                 onclick="openCheckoutModal()"
                                 class="btn btn-success w-100 rounded-pill py-2.5 fw-bold shadow-sm fs-6 mb-2 {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}">
@@ -1001,9 +1044,7 @@
 
                     </form>
 
-
-                    <!-- Form Batal Transaksi -->
-
+                    {{-- Form Batal Transaksi --}}
                     @can('delete', $sale)
 
                         <form action="{{ route('penjualan.destroy', $sale->id) }}"
@@ -1035,19 +1076,15 @@
 
 </div>
 
-
-<!-- =========================================================
+{{-- =========================================================
      MODAL KONFIRMASI CHECKOUT
-     ========================================================= -->
-
+     ========================================================= --}}
 <div id="checkoutModal"
      class="delete-modal">
 
     <div class="delete-modal-box">
 
-
-        <!-- Header Modal -->
-
+        {{-- Header Modal --}}
         <div class="delete-modal-header">
 
             <div class="d-flex align-items-center gap-3">
@@ -1057,7 +1094,6 @@
                     <i class="fa-solid fa-circle-check"></i>
 
                 </div>
-
 
                 <div>
 
@@ -1073,7 +1109,6 @@
 
             </div>
 
-
             <button type="button"
                     class="delete-close"
                     onclick="closeCheckoutModal()">
@@ -1084,9 +1119,7 @@
 
         </div>
 
-
-        <!-- Body Modal -->
-
+        {{-- Body Modal --}}
         <div class="delete-modal-body">
 
             <h5 class="fw-bold text-dark mb-2">
@@ -1096,7 +1129,6 @@
             <p class="text-muted mb-0">
                 Pastikan semua data transaksi dan pembayaran sudah benar.
             </p>
-
 
             <div class="delete-warning mt-3">
 
@@ -1109,9 +1141,7 @@
 
         </div>
 
-
-        <!-- Footer Modal -->
-
+        {{-- Footer Modal --}}
         <div class="delete-modal-footer">
 
             <button type="button"
@@ -1123,7 +1153,6 @@
                 Batal
 
             </button>
-
 
             <button type="button"
                     class="btn-checkout-confirm"
@@ -1141,24 +1170,293 @@
 
 </div>
 
-
 <script>
+
+    /* =========================================================
+       DATA STOK PRODUK DI KERANJANG
+       ========================================================= */
+
+    @php
+        $stokKeranjang = $sale->ItemPenjualan->map(function ($item) {
+            return [
+                'nama' => $item->produk->nama,
+                'quantity' => $item->kuantitas,
+                'stok' => $item->produk->stok,
+            ];
+        })->values();
+    @endphp
+
+    const stokKeranjang = @json($stokKeranjang);
+
+
+    /* =========================================================
+       NOTIFIKASI STOK
+       ========================================================= */
+
+    function showStockWarning(message) {
+
+        const alertBox =
+            document.getElementById('stockWarningAlert');
+
+        const alertMessage =
+            document.getElementById('stockWarningMessage');
+
+        if (!alertBox || !alertMessage) {
+            return;
+        }
+
+        alertMessage.textContent = message;
+
+        alertBox.style.display = 'block';
+
+        window.clearTimeout(
+            window.stockWarningTimer
+        );
+
+        window.stockWarningTimer = setTimeout(function () {
+
+            closeStockWarning();
+
+        }, 5000);
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+
+    function closeStockWarning() {
+
+        const alertBox =
+            document.getElementById('stockWarningAlert');
+
+        if (alertBox) {
+            alertBox.style.display = 'none';
+        }
+    }
+
+
+    /* =========================================================
+       CEK QUANTITY PRODUK DI KATALOG
+       ========================================================= */
+
+    document
+        .querySelectorAll('.product-quantity')
+        .forEach(function (input) {
+
+            input.addEventListener('input', function () {
+
+                const stock =
+                    Number(this.dataset.stock) || 0;
+
+                const quantity =
+                    Number(this.value) || 0;
+
+                this.classList.remove(
+                    'quantity-warning'
+                );
+
+                if (quantity > stock) {
+
+                    this.classList.add(
+                        'quantity-warning'
+                    );
+
+                    showStockWarning(
+                        'Jumlah yang dimasukkan melebihi stok yang tersedia. ' +
+                        'Stok produk ini hanya ' +
+                        stock +
+                        ' unit.'
+                    );
+                }
+            });
+        });
+
+
+    /* =========================================================
+       CEK FORM TAMBAH PRODUK
+       ========================================================= */
+
+    document
+        .querySelectorAll('form[action*="itempenjualan.store"]')
+        .forEach(function (form) {
+
+            form.addEventListener('submit', function (event) {
+
+                const input =
+                    form.querySelector('.product-quantity');
+
+                if (!input) {
+                    return;
+                }
+
+                const stock =
+                    Number(input.dataset.stock) || 0;
+
+                const quantity =
+                    Number(input.value) || 0;
+
+                input.classList.remove(
+                    'quantity-warning'
+                );
+
+
+                if (stock <= 0) {
+
+                    event.preventDefault();
+
+                    input.classList.add(
+                        'quantity-warning'
+                    );
+
+                    showStockWarning(
+                        'Produk ini sedang habis. Silakan pilih produk lain.'
+                    );
+
+                    return;
+                }
+
+
+                if (quantity < 1) {
+
+                    event.preventDefault();
+
+                    input.classList.add(
+                        'quantity-warning'
+                    );
+
+                    showStockWarning(
+                        'Jumlah produk minimal 1.'
+                    );
+
+                    input.focus();
+
+                    return;
+                }
+
+
+                if (quantity > stock) {
+
+                    event.preventDefault();
+
+                    input.classList.add(
+                        'quantity-warning'
+                    );
+
+                    showStockWarning(
+                        'Jumlah yang dimasukkan melebihi stok yang tersedia. ' +
+                        'Stok produk ini hanya ' +
+                        stock +
+                        ' unit.'
+                    );
+
+                    input.focus();
+
+                    return;
+                }
+
+            });
+        });
+
+
+    /* =========================================================
+       CEK QUANTITY DI KERANJANG
+       ========================================================= */
+
+    function validateCartQuantity(input) {
+
+        const quantityLama =
+            Number(input.dataset.cartQuantity) || 0;
+
+        const stokTersedia =
+            Number(input.dataset.cartStock) || 0;
+
+        const quantityBaru =
+            Number(input.value) || 0;
+
+        /*
+         * Karena stok yang tampil sudah dikurangi oleh jumlah
+         * yang ada di keranjang, yang boleh ditambahkan hanya
+         * sebesar stok yang tersisa.
+         */
+
+        const tambahan =
+            quantityBaru - quantityLama;
+
+
+        if (quantityBaru < 1) {
+
+            input.value =
+                quantityLama;
+
+            showStockWarning(
+                'Jumlah produk minimal 1.'
+            );
+
+            return;
+        }
+
+
+        if (tambahan > stokTersedia) {
+
+            input.value =
+                quantityLama;
+
+            showStockWarning(
+                'Jumlah produk "' +
+                (
+                    input
+                        .closest('tr')
+                        ?.querySelector('td:first-child')
+                        ?.textContent
+                        .trim() || ''
+                ) +
+                '" melebihi stok yang tersedia. ' +
+                'Stok tambahan yang tersedia hanya ' +
+                stokTersedia +
+                ' unit.'
+            );
+
+            return;
+        }
+
+
+        input.form.submit();
+    }
+
 
     /* =========================================================
        PEMBAYARAN CASH & QRIS
        ========================================================= */
 
-    const paymentMethod = document.getElementById('paymentMethod');
+    const paymentMethod =
+        document.getElementById('paymentMethod');
 
-    const qrisPayment = document.getElementById('qrisPayment');
+    const qrisPayment =
+        document.getElementById('qrisPayment');
 
-    const cashPayment = document.getElementById('cashPayment');
+    const cashPayment =
+        document.getElementById('cashPayment');
 
-    const uangDibayar = document.getElementById('uangDibayar');
+    const uangDibayar =
+        document.getElementById('uangDibayar');
 
-    const kembalian = document.getElementById('kembalian');
+    const kembalian =
+        document.getElementById('kembalian');
 
-    const totalPembayaran = {{ $sale->total_pembayaran }};
+
+    /*
+     * TOTAL YANG DIGUNAKAN UNTUK PEMBAYARAN
+     *
+     * Sudah memperhitungkan diskon 10%.
+     *
+     * Jika total belanja >= Rp1.000.000,
+     * total pembayaran otomatis dikurangi 10%.
+     */
+
+    const totalPembayaran =
+        {{ $totalSetelahDiskon }};
 
 
     /* =========================================================
@@ -1169,36 +1467,44 @@
 
         if (paymentMethod.value === 'QRIS') {
 
-            qrisPayment.style.display = 'block';
+            qrisPayment.style.display =
+                'block';
 
-            cashPayment.style.display = 'none';
+            cashPayment.style.display =
+                'none';
 
-            uangDibayar.value = '';
+            uangDibayar.value =
+                '';
 
-            kembalian.textContent = 'Rp 0';
+            kembalian.textContent =
+                'Rp 0';
 
         }
 
         else if (paymentMethod.value === 'CASH') {
 
-            qrisPayment.style.display = 'none';
+            qrisPayment.style.display =
+                'none';
 
-            cashPayment.style.display = 'block';
+            cashPayment.style.display =
+                'block';
 
         }
 
         else {
 
-            qrisPayment.style.display = 'none';
+            qrisPayment.style.display =
+                'none';
 
-            cashPayment.style.display = 'none';
+            cashPayment.style.display =
+                'none';
 
-            uangDibayar.value = '';
+            uangDibayar.value =
+                '';
 
-            kembalian.textContent = 'Rp 0';
-
+            kembalian.textContent =
+                'Rp 0';
         }
-
     }
 
 
@@ -1206,36 +1512,46 @@
        HITUNG KEMBALIAN
        ========================================================= */
 
-    uangDibayar.addEventListener('input', function () {
+    uangDibayar.addEventListener(
+        'input',
+        function () {
 
-        const uang = Number(this.value) || 0;
+            const uang =
+                Number(this.value) || 0;
 
-        const hasil = uang - totalPembayaran;
+            const hasil =
+                uang - totalPembayaran;
 
 
-        if (uang === 0) {
+            if (uang === 0) {
 
-            kembalian.textContent = 'Rp 0';
+                kembalian.textContent =
+                    'Rp 0';
+
+            }
+
+            else if (hasil >= 0) {
+
+                kembalian.textContent =
+                    'Rp ' +
+                    hasil.toLocaleString('id-ID');
+
+            }
+
+            else {
+
+                kembalian.textContent =
+                    'Uang Kurang';
+            }
 
         }
-
-        else if (hasil >= 0) {
-
-            kembalian.textContent =
-                'Rp ' + hasil.toLocaleString('id-ID');
-
-        }
-
-        else {
-
-            kembalian.textContent = 'Uang Kurang';
-
-        }
-
-    });
+    );
 
 
-    paymentMethod.addEventListener('change', checkPaymentMethod);
+    paymentMethod.addEventListener(
+        'change',
+        checkPaymentMethod
+    );
 
     checkPaymentMethod();
 
@@ -1246,90 +1562,140 @@
 
     function openCheckoutModal() {
 
-        const ukuran = document.getElementById('ukuranBaju').value;
+        const ukuran =
+            document.getElementById(
+                'ukuranBaju'
+            ).value;
 
-        const metode = paymentMethod.value;
+        const metode =
+            paymentMethod.value;
 
 
-        /* CEK UKURAN */
+        /* =====================================================
+           CEK KERANJANG KOSONG
+           ===================================================== */
+
+        if (stokKeranjang.length === 0) {
+
+            alert(
+                'Keranjang masih kosong.\n\n' +
+                'Silakan pilih produk terlebih dahulu.'
+            );
+
+            return;
+        }
+
+
+        /* =====================================================
+           CEK UKURAN
+           ===================================================== */
 
         if (!ukuran) {
 
-            alert('Silakan pilih ukuran baju terlebih dahulu.');
+            alert(
+                'Silakan pilih ukuran baju terlebih dahulu.'
+            );
 
             return;
-
         }
 
 
-        /* CEK METODE PEMBAYARAN */
+        /* =====================================================
+           CEK METODE PEMBAYARAN
+           ===================================================== */
 
         if (!metode) {
 
-            alert('Silakan pilih metode pembayaran terlebih dahulu.');
+            alert(
+                'Silakan pilih metode pembayaran terlebih dahulu.'
+            );
 
             return;
-
         }
 
 
-        /* CEK CASH */
+        /* =====================================================
+           CEK CASH
+           ===================================================== */
 
         if (metode === 'CASH') {
 
-            const uang = Number(uangDibayar.value) || 0;
+            const uang =
+                Number(uangDibayar.value) || 0;
 
 
             if (uang <= 0) {
 
-                alert('Silakan masukkan uang yang dibayar.');
+                alert(
+                    'Silakan masukkan uang yang dibayar.'
+                );
 
                 uangDibayar.focus();
 
                 return;
-
             }
 
 
             if (uang < totalPembayaran) {
 
-                alert('Uang yang dibayar kurang dari total pembayaran.');
+                alert(
+                    'Uang yang dibayar kurang dari total pembayaran.'
+                );
 
                 uangDibayar.focus();
 
                 return;
-
             }
-
         }
 
 
-        /* TAMPILKAN MODAL */
+        /* =====================================================
+           TAMPILKAN MODAL CHECKOUT
+           ===================================================== */
 
-        const modal = document.getElementById('checkoutModal');
+        const modal =
+            document.getElementById(
+                'checkoutModal'
+            );
 
         modal.classList.add('show');
 
-        document.body.style.overflow = 'hidden';
-
+        document.body.style.overflow =
+            'hidden';
     }
 
+
+    /* =========================================================
+       TUTUP MODAL CHECKOUT
+       ========================================================= */
 
     function closeCheckoutModal() {
 
-        const modal = document.getElementById('checkoutModal');
+        const modal =
+            document.getElementById(
+                'checkoutModal'
+            );
 
-        modal.classList.remove('show');
+        modal.classList.remove(
+            'show'
+        );
 
-        document.body.style.overflow = '';
-
+        document.body.style.overflow =
+            '';
     }
 
 
+    /* =========================================================
+       SUBMIT CHECKOUT
+       ========================================================= */
+
     function submitCheckout() {
 
-        document.getElementById('checkoutForm').submit();
-
+        document
+            .getElementById(
+                'checkoutForm'
+            )
+            .submit();
     }
 
 
@@ -1337,30 +1703,34 @@
        KLIK DI LUAR MODAL
        ========================================================= */
 
-    document.getElementById('checkoutModal').addEventListener('click', function(event) {
+    document
+        .getElementById('checkoutModal')
+        .addEventListener(
+            'click',
+            function (event) {
 
-        if (event.target === this) {
+                if (event.target === this) {
 
-            closeCheckoutModal();
-
-        }
-
-    });
+                    closeCheckoutModal();
+                }
+            }
+        );
 
 
     /* =========================================================
        TOMBOL ESC
        ========================================================= */
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener(
+        'keydown',
+        function (event) {
 
-        if (event.key === 'Escape') {
+            if (event.key === 'Escape') {
 
-            closeCheckoutModal();
-
+                closeCheckoutModal();
+            }
         }
-
-    });
+    );
 
 </script>
 

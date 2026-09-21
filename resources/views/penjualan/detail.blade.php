@@ -67,7 +67,78 @@
         letter-spacing: 0.5px;
     }
 
-    /* PRINT STYLE */
+    /* =========================
+       MODAL KONFIRMASI QRIS
+    ========================== */
+
+    .modal-qris-content {
+        border: 0;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+    }
+
+    .modal-qris-header {
+        background: linear-gradient(135deg, #334155 0%, #475569 100%);
+        color: white;
+        border: 0;
+        padding: 1.5rem;
+    }
+
+    .modal-qris-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .modal-qris-body {
+        padding: 2rem;
+    }
+
+    .modal-qris-alert {
+        background-color: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #15803d;
+        border-radius: 16px;
+        padding: 1rem;
+    }
+
+    .modal-qris-footer {
+        border: 0;
+        padding: 0 2rem 2rem;
+        gap: 12px;
+    }
+
+    .btn-modal-cancel {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #dbe4ee;
+        border-radius: 14px;
+        padding: 0.85rem 1.2rem;
+        font-weight: 700;
+        transition: all 0.2s ease;
+    }
+
+    .btn-modal-cancel:hover {
+        background-color: #e2e8f0;
+        color: #334155;
+    }
+
+    .btn-modal-confirm {
+        border-radius: 14px;
+        padding: 0.85rem 1.2rem;
+        font-weight: 700;
+    }
+
+    /* =========================
+       PRINT STYLE
+    ========================== */
+
     @media print {
 
         @page {
@@ -156,6 +227,12 @@
         .qris-image {
             max-width: 220px !important;
             max-height: 220px !important;
+        }
+
+        /* Modal jangan ikut print */
+        .modal,
+        .modal-backdrop {
+            display: none !important;
         }
     }
 </style>
@@ -348,7 +425,7 @@
 
                                     <i class="fa-solid fa-circle-check me-1"></i>
 
-                                    COMPLETED
+                                    SELESAI
 
                                 </span>
 
@@ -356,9 +433,9 @@
 
                                 <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill px-3 py-1 fw-bold">
 
-                                    <i class="fa-solid fa-clock-rotate-left me-1"></i>
+                                    <i class="fa-solid fa-clock me-1"></i>
 
-                                    OPEN
+                                    BELUM SELESAI
 
                                 </span>
 
@@ -443,12 +520,44 @@
                             </div>
 
                             <p class="mt-3 mb-1 fw-bold text-dark">
-                                Scan QRIS untuk melakukan pembayaran
+                                Scan QRIS Untuk Melakukan Pembayaran
                             </p>
 
                             <p class="text-muted small mb-0">
                                 Total: Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
                             </p>
+
+
+                            <!-- Tombol Konfirmasi Pembayaran QRIS -->
+                            @if($sale->status !== 'COMPLETED')
+
+                                <!-- Tombol membuka modal -->
+                                <button type="button"
+                                        class="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm mt-4 no-print"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalKonfirmasiQRIS">
+
+                                    <i class="fa-solid fa-circle-check me-2"></i>
+
+                                    Konfirmasi Pembayaran
+
+                                </button>
+
+                            @else
+
+                                <div class="mt-4 no-print">
+
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 fw-bold">
+
+                                        <i class="fa-solid fa-circle-check me-1"></i>
+
+                                        Pembayaran Sudah Dikonfirmasi
+
+                                    </span>
+
+                                </div>
+
+                            @endif
 
                         </div>
 
@@ -660,5 +769,132 @@
     </div>
 
 </div>
+
+
+<!-- =====================================================
+     MODAL KONFIRMASI PEMBAYARAN QRIS
+====================================================== -->
+@if($sale->metode_pembayaran === 'QRIS' && $sale->status !== 'COMPLETED')
+
+<div class="modal fade"
+     id="modalKonfirmasiQRIS"
+     tabindex="-1"
+     aria-labelledby="modalKonfirmasiQRISLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content modal-qris-content">
+
+            <!-- Header Modal -->
+            <div class="modal-header modal-qris-header">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="modal-qris-icon me-3">
+
+                        <i class="fa-solid fa-circle-check fa-2x"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h5 class="modal-title fw-bold mb-1"
+                            id="modalKonfirmasiQRISLabel">
+
+                            Konfirmasi Pembayaran
+
+                        </h5>
+
+                        <small style="color: #cbd5e1;">
+
+                            Pembayaran QRIS
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+
+            </div>
+
+
+            <!-- Body Modal -->
+            <div class="modal-body modal-qris-body text-center">
+
+                <h4 class="fw-bold text-dark mb-2">
+
+                    Apakah pembayaran QRIS sudah diterima
+
+                </h4>
+
+                <p class="text-muted mb-4">
+
+                    Pastikan semua data transaksi dan pembayaran sudah benar.
+
+                </p>
+
+
+                <div class="modal-qris-alert text-start">
+
+                    <i class="fa-solid fa-circle-info me-2"></i>
+
+                    Setelah checkout, transaksi akan ditandai sebagai
+
+                    <strong>SELESAI</strong>.
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer Modal -->
+            <div class="modal-footer modal-qris-footer d-flex">
+
+                <!-- Tombol Batal -->
+                <button type="button"
+                        class="btn btn-modal-cancel flex-fill"
+                        data-bs-dismiss="modal">
+
+                    <i class="fa-solid fa-arrow-left me-2"></i>
+
+                    Batal
+
+                </button>
+
+
+                <!-- Form Konfirmasi -->
+                <form action="{{ route('penjualan.konfirmasi', $sale->id) }}"
+                      method="POST"
+                      class="flex-fill">
+
+                    @csrf
+
+                    <button type="submit"
+                            class="btn btn-success btn-modal-confirm w-100">
+
+                        <i class="fa-solid fa-circle-check me-2"></i>
+
+                        Ya, Konfirmasi
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@endif
 
 @endsection

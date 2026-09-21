@@ -213,13 +213,20 @@ class PenjualanController extends Controller
                     // Hitung kembalian
                     $kembalian = $uangDibayar - $total;
 
+                    // CASH langsung selesai karena uang sudah diterima
+                    $status = 'COMPLETED';
+
                 } else {
 
                     // ==========================================
-                    // QRIS TETAP SEPERTI SEBELUMNYA
+                    // PEMBAYARAN QRIS
                     // ==========================================
                     $uangDibayar = null;
                     $kembalian = null;
+
+                    // QRIS belum selesai sampai pembayaran
+                    // dikonfirmasi oleh kasir
+                    $status = 'OPEN';
                 }
 
                 // Simpan transaksi
@@ -229,7 +236,7 @@ class PenjualanController extends Controller
                     'total_pembayaran'  => $total,
                     'uang_dibayar'      => $uangDibayar,
                     'kembalian'         => $kembalian,
-                    'status'            => 'COMPLETED'
+                    'status'            => $status
                 ]);
             });
 
@@ -238,9 +245,44 @@ class PenjualanController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
+        // Kalau QRIS, tetap ke detail supaya bisa
+        // menunggu pembayaran dan konfirmasi
+        if ($request->payment_method === 'QRIS') {
+            return redirect()
+                ->route('penjualan.show', $penjualan->id)
+                ->with('success', 'Silakan lakukan pembayaran melalui QRIS.');
+        }
+
+        // Kalau CASH langsung selesai
         return redirect()
             ->route('penjualan.index')
             ->with('success', 'Transaksi berhasil diselesaikan');
+    }
+
+    /**
+     * Konfirmasi pembayaran QRIS.
+     */
+    public function konfirmasiPembayaran(Penjualan $penjualan)
+    {
+        if ($penjualan->status !== 'OPEN') {
+            return back()->with('error', 'Transaksi sudah selesai.');
+        }
+
+        if ($penjualan->metode_pembayaran !== 'QRIS') {
+            return back()->with('error', 'Konfirmasi ini hanya untuk pembayaran QRIS.');
+        }
+
+        if ($penjualan->itemPenjualan()->count() === 0) {
+            return back()->with('error', 'Keranjang masih kosong.');
+        }
+
+        $penjualan->update([
+            'status' => 'COMPLETED'
+        ]);
+
+        return redirect()
+            ->route('penjualan.show', $penjualan->id)
+            ->with('success', 'Pembayaran QRIS berhasil dikonfirmasi. Transaksi selesai.');
     }
 
     /**

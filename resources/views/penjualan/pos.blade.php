@@ -974,7 +974,7 @@
 
 
                             <p class="mt-2 mb-1 fw-bold text-dark">
-                                Scan QRIS untuk melakukan pembayaran
+                                Scan QRIS Untuk Melakukan Pembayaran
                             </p>
 
 
